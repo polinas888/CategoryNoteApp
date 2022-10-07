@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.categorynoteapp.MainActivity
 import com.example.categorynoteapp.R
@@ -19,6 +20,7 @@ import com.example.categorynoteapp.model.Category
 import com.example.categorynoteapp.ui.notification.NotificationFragment
 import com.google.gson.GsonBuilder
 import com.example.categorynoteapp.appComponent
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 const val CREATE_CATEGORY_FRAGMENT = 1
@@ -93,18 +95,16 @@ class CategoryFragment : Fragment() {
                     val newCategory =
                         category?.let { categoryName -> Category(name = categoryName) }
 
-                    if (newCategory != null) {
-                        categoryViewModel.saveCategory(newCategory)
+                    lifecycleScope.launch {
+                        if (newCategory != null) {
+                            categoryViewModel.saveCategory(newCategory)
+                        }
+                        binding.emptyListText.visibility = View.GONE
+                        categoryViewModel.loadData()
+                        categoryViewModel.categoryListLiveData.value?.let { categories ->
+                            updateUI(categories)
+                        }
                     }
-                    binding.emptyListText.visibility = View.GONE
-                    categoryViewModel.loadData()
-                    categoryViewModel.categoryListLiveData.value?.let { categories ->
-                        updateUI(
-                            categories
-                        )
-                    }
-                } else {
-                    Log.i("Error", "Bad result")
                 }
             }
         }
