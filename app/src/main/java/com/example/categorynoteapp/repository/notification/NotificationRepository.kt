@@ -13,4 +13,7 @@ class NotificationRepository @Inject constructor(notificationDao: NotificationDa
         notificationDao.addNotification(notification)
     }
 
+    override suspend fun getNotifications(categoryId: Int): List<Notification> {
+        return notificationDao.getNotifications(categoryId)
+    }
 }

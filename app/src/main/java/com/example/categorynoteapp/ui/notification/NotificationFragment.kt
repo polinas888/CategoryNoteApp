@@ -18,10 +18,8 @@ import com.example.categorynoteapp.changeFragment
 import com.example.categorynoteapp.databinding.FragmentNotificationBinding
 import com.example.categorynoteapp.model.Notification
 import com.example.categorynoteapp.ui.category.ARG_CATEGORY_ID
-import com.google.gson.GsonBuilder
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 
 const val ARG_NOTIFICATION = "arg_notification"
 const val NOTIFICATION_REQUEST_KEY = "requestKey"
@@ -51,6 +49,11 @@ class NotificationFragment : Fragment() {
                 if (newNotification != null) {
                     notificationViewModel.saveNotification(newNotification)
                 }
+                binding.emptyListText.visibility = View.INVISIBLE
+                notificationViewModel.loadData()
+                notificationViewModel.notificationListLiveData.value?.let { notifications ->
+                    updateUI(notifications)
+                }
             }
         }
     }
@@ -70,10 +73,33 @@ class NotificationFragment : Fragment() {
         (activity as MainActivity).supportActionBar?.title =
             getString(R.string.toolbar_title_notification) + " $categoryId"
 
+        notificationViewModel.loadData()
+        notificationViewModel.notificationListLiveData.observe(
+            viewLifecycleOwner,
+            Observer { notifications ->
+                if (notifications.isEmpty()) {
+                    binding.emptyListText.visibility = View.VISIBLE
+                    binding.progressBar.visibility = View.GONE
+                } else {
+                    updateUI(notifications)
+                    binding.progressBar.visibility = View.GONE
+                    binding.emptyListText.visibility = View.INVISIBLE
+                }
+            })
+
         binding.addButton.setOnClickListener {
             val fragment = NotificationCreateOrChangeFragment()
             val args = Bundle()
             fragment.changeFragment(args, parentFragmentManager)
         }
+    }
+
+    private fun updateUI(notifications: List<Notification>) {
+        notificationAdapter =
+            NotificationAdapter(notifications) { notification -> adapterOnClick(notification) }
+        binding.notificationRecyclerView.adapter = notificationAdapter
+    }
+
+    private fun adapterOnClick(notification: Notification) {
     }
 }
