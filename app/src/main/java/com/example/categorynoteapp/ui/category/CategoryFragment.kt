@@ -9,9 +9,13 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.categorynoteapp.MainActivity
 import com.example.categorynoteapp.R
+import com.example.categorynoteapp.changeFragment
 import com.example.categorynoteapp.databinding.FragmentCategoryBinding
 import com.example.categorynoteapp.model.Category
+import com.example.categorynoteapp.ui.category.notification.NotificationFragment
+import com.google.gson.GsonBuilder
 
+const val ARG_CATEGORY: String = "CATEGORY"
 class CategoryFragment : Fragment() {
     private lateinit var binding: FragmentCategoryBinding
     private lateinit var categoryAdapter: CategoryAdapter
@@ -44,5 +48,13 @@ class CategoryFragment : Fragment() {
     }
 
     private fun adapterOnClick(category: Category) {
+        val fragment = NotificationFragment()
+        val args = Bundle()
+        val builder = GsonBuilder()
+        val gson = builder.create()
+        val result: String = gson.toJson(category)
+
+        args.putString(ARG_CATEGORY, result)
+        fragment.changeFragment(args, parentFragmentManager)
     }
 }
