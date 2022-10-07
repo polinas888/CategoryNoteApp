@@ -96,10 +96,25 @@ class NotificationFragment : Fragment() {
 
     private fun updateUI(notifications: List<Notification>) {
         notificationAdapter =
-            NotificationAdapter(notifications) { notification -> adapterOnClick(notification) }
+            NotificationAdapter(
+                (notifications),
+                { notification -> deleteNotification(notification) })
         binding.notificationRecyclerView.adapter = notificationAdapter
     }
 
-    private fun adapterOnClick(notification: Notification) {
+    private fun deleteNotification(notification: Notification) {
+        lifecycleScope.launch {
+            notificationViewModel.deleteNotification(notification)
+            binding.emptyListText.visibility = View.INVISIBLE
+            notificationViewModel.loadData()
+            notificationViewModel.notificationListLiveData.observe(viewLifecycleOwner, Observer {
+                updateUI(it)
+                if (notificationViewModel.notificationListLiveData.value?.isNotEmpty() == true) {
+                    binding.emptyListText.visibility = View.INVISIBLE
+                } else {
+                    binding.emptyListText.visibility = View.VISIBLE
+                }
+            })
+        }
     }
 }

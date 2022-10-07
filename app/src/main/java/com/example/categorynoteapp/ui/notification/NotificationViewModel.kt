@@ -35,6 +35,14 @@ class NotificationViewModel @Inject constructor(private val notificationReposito
         }
     }
 
+    suspend fun deleteNotification(notification: Notification) {
+        try {
+            notificationRepository.deleteNotification(notification)
+        } catch (e: java.lang.Exception) {
+            Log.i("NotificationLog", "Couldn't delete notification")
+        }
+    }
+
     private suspend fun getNotifications(categoryId: Int): DataResult<List<Notification>> {
         return try {
             val notifications = notificationRepository.getNotifications(categoryId)
