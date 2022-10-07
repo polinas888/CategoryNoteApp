@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">CategoryNoteApp</string>
+    <string name="add_button">+</string>
+    <string name="list_is_empty">Список категорий пуст</string>
+    <string name="toolbar_title_category">Категории</string>
 </resources>
