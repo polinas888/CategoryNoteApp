@@ -7,11 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.categorynoteapp.model.Category
 import com.example.categorynoteapp.repository.DataResult
-import com.example.categorynoteapp.repository.category.CategoryNotificationRepository
 import kotlinx.coroutines.launch
+import com.example.categorynoteapp.repository.category.CategoryRepository
 
-class CategoryViewModel : ViewModel() {
-    private val categoryRepository = CategoryNotificationRepository.get()
+class CategoryViewModel(private val categoryRepository: CategoryRepository) : ViewModel() {
     val categoryListLiveData = MutableLiveData<List<Category>>()
 
     fun saveCategory(category: Category) {

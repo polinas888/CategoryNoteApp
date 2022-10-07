@@ -11,12 +11,17 @@ import com.example.categorynoteapp.MainActivity
 import com.example.categorynoteapp.R
 import com.example.categorynoteapp.databinding.FragmentNotificationBinding
 import com.example.categorynoteapp.ui.category.ARG_CATEGORY_ID
+import javax.inject.Inject
 
 class NotificationFragment : Fragment() {
 
     private lateinit var binding: FragmentNotificationBinding
     private lateinit var notificationAdapter: NotificationAdapter
-    private val notificationViewModel by viewModels<NotificationViewModel>()
+    @Inject
+    lateinit var notificationViewModelFactory: NotificationViewModelFactory
+    private val notificationViewModel by viewModels<NotificationViewModel> {
+        notificationViewModelFactory
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {

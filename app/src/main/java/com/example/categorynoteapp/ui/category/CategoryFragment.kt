@@ -18,13 +18,19 @@ import com.example.categorynoteapp.databinding.FragmentCategoryBinding
 import com.example.categorynoteapp.model.Category
 import com.example.categorynoteapp.ui.notification.NotificationFragment
 import com.google.gson.GsonBuilder
+import com.example.categorynoteapp.appComponent
+import javax.inject.Inject
 
 const val CREATE_CATEGORY_FRAGMENT = 1
 const val ARG_CATEGORY_ID: String = "CATEGORY_ID"
 
 class CategoryFragment : Fragment() {
     private lateinit var binding: FragmentCategoryBinding
-    private val categoryViewModel by viewModels<CategoryViewModel>()
+    @Inject
+    lateinit var categoryViewModelFactory: CategoryViewModelFactory
+    private val categoryViewModel by viewModels<CategoryViewModel> {
+        categoryViewModelFactory
+    }
     private lateinit var categoryAdapter: CategoryAdapter
 
     override fun onCreateView(
@@ -33,6 +39,7 @@ class CategoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCategoryBinding.inflate(layoutInflater)
+        requireContext().appComponent.inject(this)
         binding.categoryRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         return binding.root
     }
