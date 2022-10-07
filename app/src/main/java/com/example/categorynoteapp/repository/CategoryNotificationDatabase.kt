@@ -7,5 +7,5 @@ import com.example.categorynoteapp.model.Notification
 
 @Database(entities = [Category::class, Notification::class], version = 1)
 abstract class CategoryNotificationDatabase : RoomDatabase() {
-
+    abstract fun categoryDao(): CategoryDao
 }

@@ -1,5 +1,7 @@
 package com.example.categorynoteapp.ui.category
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,8 +21,7 @@ const val CREATE_CATEGORY_FRAGMENT = 1
 const val ARG_CATEGORY: String = "CATEGORY"
 class CategoryFragment : Fragment() {
     private lateinit var binding: FragmentCategoryBinding
-    private lateinit var categoryAdapter: CategoryAdapter
-    private val locationViewModel by viewModels<CategoryViewModel>()
+    private val categoryViewModel by viewModels<CategoryViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCategoryBinding.inflate(layoutInflater)
@@ -49,5 +50,23 @@ class CategoryFragment : Fragment() {
 
         args.putString(ARG_CATEGORY, result)
         fragment.changeFragment(args, parentFragmentManager)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            CREATE_CATEGORY_FRAGMENT -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val bundle = data?.extras
+                    val category = bundle?.getString("category")
+                    val newCategory =
+                        category?.let { categoryName -> Category(name = categoryName) }
+
+                    if (newCategory != null) {
+                        categoryViewModel.saveCategory(newCategory)
+                    }
+                }
+            }
+        }
     }
 }
