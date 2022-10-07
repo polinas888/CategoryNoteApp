@@ -44,37 +44,23 @@ class NotificationFragment : Fragment() {
             val isNewNotification = bundle.getBoolean(IS_NEW_NOTIFICATION)
             if (isNewNotification) {
                 val newNotification = notification?.let { notificationText ->
-                    categoryId.let { category_id ->
-                        Notification(text = notificationText, category_id = category_id)
-                    }
+                    Notification(text = notificationText, category_id = categoryId)
                 }
+                binding.progressBar.visibility = View.VISIBLE
                 lifecycleScope.launch {
                     if (newNotification != null) {
                         notificationViewModel.saveNotification(newNotification)
                     }
-                    binding.emptyListText.visibility = View.INVISIBLE
-                    notificationViewModel.loadData()
-                    notificationViewModel.notificationListLiveData.value?.let { notifications ->
-                        updateUI(notifications)
-                    }
+                    setupViewVisibilityUpdateUi()
                 }
             } else {
                 val newNotification = notification?.let { notificationText ->
-                    Notification(
-                        id = notificationIdForUpdate,
-                        text = notificationText,
-                        category_id = categoryId
-                    )
-                }
+                    Notification(id = notificationIdForUpdate, text = notificationText, category_id = categoryId) }
                 lifecycleScope.launch {
                     if (newNotification != null) {
                         notificationViewModel.updateNotification(newNotification)
                     }
-                    binding.emptyListText.visibility = View.INVISIBLE
-                    notificationViewModel.loadData()
-                    notificationViewModel.notificationListLiveData.value?.let { notifications ->
-                        updateUI(notifications)
-                    }
+                    setupViewVisibilityUpdateUi()
                 }
             }
         }
@@ -101,12 +87,11 @@ class NotificationFragment : Fragment() {
             Observer { notifications ->
                 if (notifications.isEmpty()) {
                     binding.emptyListText.visibility = View.VISIBLE
-                    binding.progressBar.visibility = View.GONE
                 } else {
                     updateUI(notifications)
-                    binding.progressBar.visibility = View.GONE
                     binding.emptyListText.visibility = View.INVISIBLE
                 }
+                binding.progressBar.visibility = View.GONE
             })
 
         binding.addButton.setOnClickListener {
@@ -114,6 +99,15 @@ class NotificationFragment : Fragment() {
             val args = Bundle()
             fragment.changeFragment(args, parentFragmentManager)
         }
+    }
+
+    private fun setupViewVisibilityUpdateUi() {
+        binding.emptyListText.visibility = View.INVISIBLE
+        notificationViewModel.loadData()
+        notificationViewModel.notificationListLiveData.value?.let { notifications ->
+            updateUI(notifications)
+        }
+        binding.progressBar.visibility = View.GONE
     }
 
     private fun updateUI(notifications: List<Notification>) {
@@ -139,6 +133,7 @@ class NotificationFragment : Fragment() {
     }
 
     private fun deleteNotification(notification: Notification) {
+        binding.progressBar.visibility = View.VISIBLE
         lifecycleScope.launch {
             notificationViewModel.deleteNotification(notification)
             binding.emptyListText.visibility = View.INVISIBLE
@@ -151,6 +146,7 @@ class NotificationFragment : Fragment() {
                     binding.emptyListText.visibility = View.VISIBLE
                 }
             })
+            binding.progressBar.visibility = View.GONE
         }
     }
 }
