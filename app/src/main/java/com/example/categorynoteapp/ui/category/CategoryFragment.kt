@@ -12,7 +12,7 @@ import com.example.categorynoteapp.R
 import com.example.categorynoteapp.changeFragment
 import com.example.categorynoteapp.databinding.FragmentCategoryBinding
 import com.example.categorynoteapp.model.Category
-import com.example.categorynoteapp.ui.category.notification.NotificationFragment
+import com.example.categorynoteapp.ui.notification.NotificationFragment
 import com.google.gson.GsonBuilder
 
 const val ARG_CATEGORY: String = "CATEGORY"

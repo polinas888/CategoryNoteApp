@@ -1,4 +1,4 @@
-package com.example.categorynoteapp.ui.category.notification
+package com.example.categorynoteapp.ui.notification
 
 import android.os.Bundle
 import android.view.LayoutInflater
