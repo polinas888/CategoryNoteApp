@@ -15,6 +15,7 @@ import com.example.categorynoteapp.model.Category
 import com.example.categorynoteapp.ui.notification.NotificationFragment
 import com.google.gson.GsonBuilder
 
+const val CREATE_CATEGORY_FRAGMENT = 1
 const val ARG_CATEGORY: String = "CATEGORY"
 class CategoryFragment : Fragment() {
     private lateinit var binding: FragmentCategoryBinding
@@ -28,22 +29,14 @@ class CategoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity).supportActionBar?.title = getString(R.string.toolbar_title_category)
+        (activity as MainActivity).supportActionBar?.title =
+            getString(R.string.toolbar_title_category)
 
-        binding.apply {
-            categoryAdapter = CategoryAdapter { category -> adapterOnClick(category) }
-            categoryRecyclerView.adapter = categoryAdapter
-            categoryRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        }
-        postCategoryListOrEmpty()
-    }
 
-    private fun postCategoryListOrEmpty() {
-        val listLocations = locationViewModel.listLocations
-        if (listLocations.isEmpty()) {
-            binding.emptyListText.visibility = View.VISIBLE
-        } else {
-            categoryAdapter.setData(locationViewModel.listLocations)
+        binding.addButton.setOnClickListener {
+            val dialog = CreateCategoryDialogFragment()
+            dialog.setTargetFragment(this, CREATE_CATEGORY_FRAGMENT)
+            dialog.show(parentFragmentManager, "CustomDialog")
         }
     }
 
