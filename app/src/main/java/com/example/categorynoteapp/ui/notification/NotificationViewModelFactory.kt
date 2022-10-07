@@ -11,7 +11,7 @@ class NotificationViewModelFactory @Inject constructor(
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(CategoryViewModel::class.java))
+        if (modelClass.isAssignableFrom(NotificationViewModel::class.java))
             return NotificationViewModel(notificationRepository) as T
         else
             throw IllegalArgumentException("Unable to construct viewModel")

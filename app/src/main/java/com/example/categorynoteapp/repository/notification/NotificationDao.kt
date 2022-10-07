@@ -8,8 +8,6 @@ import com.example.categorynoteapp.model.Notification
 
 @Dao
 interface NotificationDao {
-    @Query("SELECT * FROM notification")
-    suspend fun getNotifications(): List<Notification>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addNotification(notification: Notification)
