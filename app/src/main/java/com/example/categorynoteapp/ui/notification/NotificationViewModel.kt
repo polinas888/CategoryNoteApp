@@ -43,6 +43,14 @@ class NotificationViewModel @Inject constructor(private val notificationReposito
         }
     }
 
+    suspend fun updateNotification(notification: Notification) {
+        try {
+            notificationRepository.updateNotification(notification)
+        } catch (e: Exception) {
+            Log.i("NotificationLog", "Couldn't update notification")
+        }
+    }
+
     private suspend fun getNotifications(categoryId: Int): DataResult<List<Notification>> {
         return try {
             val notifications = notificationRepository.getNotifications(categoryId)

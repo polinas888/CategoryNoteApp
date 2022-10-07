@@ -10,4 +10,6 @@
     <string name="delete_notification">delete notification</string>
     <string name="edit_notification">edit notification</string>
     <string name="create_or_edit_notification">Create_or_edit_notification</string>
+    <string name="list_category_is_empty">Список категорий пуст</string>
+    <string name="list_notification_is_empty">Список заметок пуст</string>
 </resources>

@@ -18,6 +18,7 @@ import com.example.categorynoteapp.changeFragment
 import com.example.categorynoteapp.databinding.FragmentNotificationBinding
 import com.example.categorynoteapp.model.Notification
 import com.example.categorynoteapp.ui.category.ARG_CATEGORY_ID
+import com.google.gson.GsonBuilder
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,6 +28,7 @@ class NotificationFragment : Fragment() {
     private lateinit var binding: FragmentNotificationBinding
     private lateinit var notificationAdapter: NotificationAdapter
     private var categoryId = 0
+    private var notificationIdForUpdate = 0
 
     @Inject
     lateinit var notificationViewModelFactory: NotificationViewModelFactory
@@ -39,20 +41,40 @@ class NotificationFragment : Fragment() {
         requireContext().appComponent.inject(this)
         setFragmentResultListener(NOTIFICATION_REQUEST_KEY) { requestKey, bundle ->
             val notification = bundle.getString(ARG_NOTIFICATION)
-            val newNotification = notification?.let { notificationText ->
-                categoryId.let { category_id ->
-                    Notification(text = notificationText, category_id = category_id)
+            val isNewNotification = bundle.getBoolean(IS_NEW_NOTIFICATION)
+            if (isNewNotification) {
+                val newNotification = notification?.let { notificationText ->
+                    categoryId.let { category_id ->
+                        Notification(text = notificationText, category_id = category_id)
+                    }
                 }
-            }
-            Log.i("notificationLog", notification.toString())
-            lifecycleScope.launch {
-                if (newNotification != null) {
-                    notificationViewModel.saveNotification(newNotification)
+                lifecycleScope.launch {
+                    if (newNotification != null) {
+                        notificationViewModel.saveNotification(newNotification)
+                    }
+                    binding.emptyListText.visibility = View.INVISIBLE
+                    notificationViewModel.loadData()
+                    notificationViewModel.notificationListLiveData.value?.let { notifications ->
+                        updateUI(notifications)
+                    }
                 }
-                binding.emptyListText.visibility = View.INVISIBLE
-                notificationViewModel.loadData()
-                notificationViewModel.notificationListLiveData.value?.let { notifications ->
-                    updateUI(notifications)
+            } else {
+                val newNotification = notification?.let { notificationText ->
+                    Notification(
+                        id = notificationIdForUpdate,
+                        text = notificationText,
+                        category_id = categoryId
+                    )
+                }
+                lifecycleScope.launch {
+                    if (newNotification != null) {
+                        notificationViewModel.updateNotification(newNotification)
+                    }
+                    binding.emptyListText.visibility = View.INVISIBLE
+                    notificationViewModel.loadData()
+                    notificationViewModel.notificationListLiveData.value?.let { notifications ->
+                        updateUI(notifications)
+                    }
                 }
             }
         }
@@ -98,8 +120,22 @@ class NotificationFragment : Fragment() {
         notificationAdapter =
             NotificationAdapter(
                 (notifications),
-                { notification -> deleteNotification(notification) })
+                { notification -> deleteNotification(notification) },
+                {notification -> updateNotification(notification)})
         binding.notificationRecyclerView.adapter = notificationAdapter
+    }
+
+    private fun updateNotification(notification: Notification) {
+        lifecycleScope.launch {
+            notificationIdForUpdate = notification.id
+            val fragment = NotificationCreateOrChangeFragment()
+            val args = Bundle()
+            val builder = GsonBuilder()
+            val gson = builder.create()
+            val result: String = gson.toJson(notification)
+            args.putString(ARG_NOTIFICATION, result)
+            fragment.changeFragment(args, parentFragmentManager)
+        }
     }
 
     private fun deleteNotification(notification: Notification) {
