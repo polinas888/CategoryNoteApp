@@ -20,7 +20,7 @@ import com.example.categorynoteapp.ui.notification.NotificationFragment
 import com.google.gson.GsonBuilder
 
 const val CREATE_CATEGORY_FRAGMENT = 1
-const val ARG_CATEGORY: String = "CATEGORY"
+const val ARG_CATEGORY_ID: String = "CATEGORY_ID"
 
 class CategoryFragment : Fragment() {
     private lateinit var binding: FragmentCategoryBinding
@@ -71,11 +71,7 @@ class CategoryFragment : Fragment() {
     private fun adapterOnClick(category: Category) {
         val fragment = NotificationFragment()
         val args = Bundle()
-        val builder = GsonBuilder()
-        val gson = builder.create()
-        val result: String = gson.toJson(category)
-
-        args.putString(ARG_CATEGORY, result)
+        args.putInt(ARG_CATEGORY_ID, category.id)
         fragment.changeFragment(args, parentFragmentManager)
     }
 
