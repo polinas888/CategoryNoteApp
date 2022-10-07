@@ -3,11 +3,13 @@ package com.example.categorynoteapp.ui.category
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.categorynoteapp.MainActivity
 import com.example.categorynoteapp.R
@@ -19,12 +21,19 @@ import com.google.gson.GsonBuilder
 
 const val CREATE_CATEGORY_FRAGMENT = 1
 const val ARG_CATEGORY: String = "CATEGORY"
+
 class CategoryFragment : Fragment() {
     private lateinit var binding: FragmentCategoryBinding
     private val categoryViewModel by viewModels<CategoryViewModel>()
+    private lateinit var categoryAdapter: CategoryAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = FragmentCategoryBinding.inflate(layoutInflater)
+        binding.categoryRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         return binding.root
     }
 
@@ -32,13 +41,29 @@ class CategoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity).supportActionBar?.title =
             getString(R.string.toolbar_title_category)
+        super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity).supportActionBar?.title =
+            getString(R.string.toolbar_title_category)
 
+        categoryViewModel.loadData()
+        categoryViewModel.categoryListLiveData.observe(viewLifecycleOwner, Observer { categories ->
+            if (categories.isEmpty()) {
+                binding.emptyListText.visibility = View.VISIBLE
+            } else {
+                updateUI(categories)
+            }
+        })
 
         binding.addButton.setOnClickListener {
             val dialog = CreateCategoryDialogFragment()
             dialog.setTargetFragment(this, CREATE_CATEGORY_FRAGMENT)
             dialog.show(parentFragmentManager, "CustomDialog")
         }
+    }
+
+    private fun updateUI(categories: List<Category>) {
+        categoryAdapter = CategoryAdapter(categories) { category -> adapterOnClick(category) }
+        binding.categoryRecyclerView.adapter = categoryAdapter
     }
 
     private fun adapterOnClick(category: Category) {
@@ -65,6 +90,15 @@ class CategoryFragment : Fragment() {
                     if (newCategory != null) {
                         categoryViewModel.saveCategory(newCategory)
                     }
+                    binding.emptyListText.visibility = View.GONE
+                    categoryViewModel.loadData()
+                    categoryViewModel.categoryListLiveData.value?.let { categories ->
+                        updateUI(
+                            categories
+                        )
+                    }
+                } else {
+                    Log.i("Error", "Bad result")
                 }
             }
         }

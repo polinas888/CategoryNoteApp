@@ -1,8 +1,9 @@
-package com.example.categorynoteapp.repository
+package com.example.categorynoteapp.repository.category
 
 import android.content.Context
 import androidx.room.Room
 import com.example.categorynoteapp.model.Category
+import com.example.categorynoteapp.repository.CategoryNotificationDatabase
 
 private const val DATABASE_NAME = "crime-database"
 class CategoryNotificationRepository private constructor(context: Context){
@@ -14,6 +15,8 @@ class CategoryNotificationRepository private constructor(context: Context){
     ).build()
 
     private val categoryDao = database.categoryDao()
+
+    suspend fun getCategories() : List<Category> = categoryDao.getCategories()
 
     suspend fun addCategory(category: Category) = categoryDao.addCategory(category)
 
