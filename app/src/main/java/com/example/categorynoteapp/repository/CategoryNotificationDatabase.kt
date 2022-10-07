@@ -5,8 +5,10 @@ import androidx.room.RoomDatabase
 import com.example.categorynoteapp.model.Category
 import com.example.categorynoteapp.model.Notification
 import com.example.categorynoteapp.repository.category.CategoryDao
+import com.example.categorynoteapp.repository.notification.NotificationDao
 
 @Database(entities = [Category::class, Notification::class], version = 1)
 abstract class CategoryNotificationDatabase : RoomDatabase() {
     abstract fun categoryDao(): CategoryDao
+    abstract fun notificationDao(): NotificationDao
 }

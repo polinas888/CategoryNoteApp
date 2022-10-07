@@ -5,7 +5,7 @@ import androidx.room.Room
 import com.example.categorynoteapp.model.Category
 import com.example.categorynoteapp.repository.CategoryNotificationDatabase
 
-private const val DATABASE_NAME = "crime-database"
+private const val DATABASE_NAME = "category_notification-database"
 class CategoryNotificationRepository private constructor(context: Context){
 
     private val database: CategoryNotificationDatabase = Room.databaseBuilder(
