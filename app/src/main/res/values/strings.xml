@@ -9,4 +9,5 @@
     <string name="toolbar_title_notification">Заметки категории</string>
     <string name="delete_notification">delete notification</string>
     <string name="edit_notification">edit notification</string>
+    <string name="create_or_edit_notification">Create_or_edit_notification</string>
 </resources>

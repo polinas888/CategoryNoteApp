@@ -13,17 +13,20 @@ import com.example.categorynoteapp.databinding.FragmentNotificationBinding
 import com.example.categorynoteapp.ui.category.ARG_CATEGORY_ID
 import javax.inject.Inject
 
+const val ARG_NOTIFICATION = "arg_notification"
+const val NOTIFICATION_REQUEST_KEY = "requestKey"
 class NotificationFragment : Fragment() {
-
     private lateinit var binding: FragmentNotificationBinding
     private lateinit var notificationAdapter: NotificationAdapter
+
     @Inject
     lateinit var notificationViewModelFactory: NotificationViewModelFactory
     private val notificationViewModel by viewModels<NotificationViewModel> {
         notificationViewModelFactory
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentNotificationBinding.inflate(layoutInflater)
         binding.notificationRecyclerView.layoutManager = LinearLayoutManager(requireContext())
