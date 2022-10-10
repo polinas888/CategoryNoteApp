@@ -3,6 +3,8 @@ package com.example.categorynoteapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.FragmentManager
+import com.example.categorynoteapp.ui.category.CategoryFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,5 +15,17 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         setupFirstFragmentIfNotSetup(savedInstanceState, supportFragmentManager)
+    }
+
+    // Single Responsibility Principle, created method setupFirstFragmentIfNotSetup
+    private fun setupFirstFragmentIfNotSetup(savedInstanceState: Bundle?, supportFragmentManager: FragmentManager) {
+        if (savedInstanceState == null) {
+            setupFirstFragment(supportFragmentManager)
+        }
+    }
+
+    // Single Responsibility Principle, created method setupFirstFragment
+    private fun setupFirstFragment(supportFragmentManager: FragmentManager) {
+        supportFragmentManager.beginTransaction().add(R.id.container, CategoryFragment()).commit()
     }
 }

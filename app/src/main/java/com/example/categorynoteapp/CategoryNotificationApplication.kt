@@ -15,3 +15,9 @@ class CategoryNotificationApplication : Application() {
         DatabaseFactory.initialize(this)
     }
 }
+
+val Context.appComponent: AppComponent
+    get() = when(this) {
+        is CategoryNotificationApplication -> appComponent
+        else -> this.applicationContext.appComponent
+    }
