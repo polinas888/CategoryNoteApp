@@ -1,14 +1,12 @@
 package com.example.categorynoteapp.ui.notification
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.categorynoteapp.MainActivity
@@ -24,6 +22,7 @@ import javax.inject.Inject
 
 const val ARG_NOTIFICATION = "arg_notification"
 const val NOTIFICATION_REQUEST_KEY = "requestKey"
+
 class NotificationFragment : Fragment() {
     private lateinit var binding: FragmentNotificationBinding
     private lateinit var notificationAdapter: NotificationAdapter
@@ -39,28 +38,25 @@ class NotificationFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireContext().appComponent.inject(this)
+
         setFragmentResultListener(NOTIFICATION_REQUEST_KEY) { requestKey, bundle ->
             val notification = bundle.getString(ARG_NOTIFICATION)
             val isNewNotification = bundle.getBoolean(IS_NEW_NOTIFICATION)
-            if (isNewNotification) {
-                val newNotification = notification?.let { notificationText ->
-                    Notification(text = notificationText, category_id = categoryId)
-                }
-                binding.progressBar.visibility = View.VISIBLE
-                lifecycleScope.launch {
-                    if (newNotification != null) {
-                        notificationViewModel.saveNotification(newNotification)
+
+            if (notification != null) {
+                if (isNewNotification) {
+                    lifecycleScope.launch {
+                        //single responsibility principle wrote method for saving new notification
+                        saveNewNotification(notification)
+                        //single responsibility principle wrote method for updating UI after change
+                        updateUiAfterChange()
                     }
-                    setupViewVisibilityUpdateUi()
-                }
-            } else {
-                val newNotification = notification?.let { notificationText ->
-                    Notification(id = notificationIdForUpdate, text = notificationText, category_id = categoryId) }
-                lifecycleScope.launch {
-                    if (newNotification != null) {
-                        notificationViewModel.updateNotification(newNotification)
+                } else {
+                    lifecycleScope.launch {
+                        //single responsibility principle wrote method for updating new notification
+                        openFragmentUpdateNotification(notification)
+                        updateUiAfterChange()
                     }
-                    setupViewVisibilityUpdateUi()
                 }
             }
         }
@@ -78,48 +74,78 @@ class NotificationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         categoryId = arguments?.getInt(ARG_CATEGORY_ID)!!
         notificationViewModel.categoryId.value = categoryId
-        (activity as MainActivity).supportActionBar?.title =
-            getString(R.string.toolbar_title_notification) + " $categoryId"
 
+        (activity as MainActivity).supportActionBar?.title = getString(R.string.toolbar_title_notification) + " $categoryId"
+
+        notificationViewModel.notificationListLiveData.observe(viewLifecycleOwner) { notifications ->
+          //single responsibility principle created method to setup data
+            setupDataOrEmptyListOnUi(notifications)
+            binding.progressBar.visibility = View.GONE
+        }
         notificationViewModel.loadData()
-        notificationViewModel.notificationListLiveData.observe(
-            viewLifecycleOwner,
-            Observer { notifications ->
-                if (notifications.isEmpty()) {
-                    binding.emptyListText.visibility = View.VISIBLE
-                } else {
-                    updateUI(notifications)
-                    binding.emptyListText.visibility = View.INVISIBLE
-                }
-                binding.progressBar.visibility = View.GONE
-            })
 
         binding.addButton.setOnClickListener {
-            val fragment = NotificationCreateOrChangeFragment()
-            val args = Bundle()
-            fragment.changeFragment(args, parentFragmentManager)
+            //single responsibility principle to open NotificationCreateOrChangeFragment
+            openNotificationCreateOrChangeFragment()
         }
     }
 
-    private fun setupViewVisibilityUpdateUi() {
-        binding.emptyListText.visibility = View.INVISIBLE
-        notificationViewModel.loadData()
-        notificationViewModel.notificationListLiveData.value?.let { notifications ->
-            updateUI(notifications)
+    //single responsibility principle method to setup data or empty list
+    private fun setupDataOrEmptyListOnUi(notifications: List<Notification>) {
+        updateUI(notifications)
+        setupVisibilityOfEmptyList(notifications)
+    }
+
+    //single responsibility principle method to setup visibility of EmptyList
+    private fun setupVisibilityOfEmptyList(notifications: List<Notification>) {
+        if (notifications.isEmpty()) {
+            binding.emptyListText.visibility = View.VISIBLE
+        } else {
+            binding.emptyListText.visibility = View.INVISIBLE
         }
-        binding.progressBar.visibility = View.GONE
+    }
+
+    //single responsibility principle method updated Ui after change
+    private fun updateUiAfterChange() {
+        lifecycleScope.launch {
+            notificationViewModel.loadData()
+            notificationViewModel.notificationListLiveData.value?.let {
+                setupDataOrEmptyListOnUi(it)
+                binding.progressBar.visibility = View.GONE}
+        }
+    }
+
+    //single responsibility principle method to save new notification
+    private suspend fun saveNewNotification(notificationText: String) {
+        val newNotification = Notification(text = notificationText, category_id = categoryId)
+        binding.progressBar.visibility = View.VISIBLE
+            notificationViewModel.saveNotification(newNotification)
+    }
+
+    //single responsibility principle method to update notification
+    private suspend fun openFragmentUpdateNotification(notificationText: String) {
+        val newNotification = Notification(
+            id = notificationIdForUpdate,
+            text = notificationText,
+            category_id = categoryId
+        )
+            notificationViewModel.updateNotification(newNotification)
     }
 
     private fun updateUI(notifications: List<Notification>) {
-        notificationAdapter =
-            NotificationAdapter(
-                (notifications),
-                { notification -> deleteNotification(notification) },
-                {notification -> updateNotification(notification)})
+        notificationAdapter = NotificationAdapter((notifications),
+            { notification -> deleteNotification(notification) },
+            { notification -> openFragmentUpdateNotification(notification) })
         binding.notificationRecyclerView.adapter = notificationAdapter
     }
 
-    private fun updateNotification(notification: Notification) {
+    private fun openNotificationCreateOrChangeFragment() {
+        val fragment = NotificationCreateOrChangeFragment()
+        val args = Bundle()
+        fragment.changeFragment(args, parentFragmentManager)
+    }
+
+    private fun openFragmentUpdateNotification(notification: Notification) {
         lifecycleScope.launch {
             notificationIdForUpdate = notification.id
             val fragment = NotificationCreateOrChangeFragment()
@@ -136,17 +162,11 @@ class NotificationFragment : Fragment() {
         binding.progressBar.visibility = View.VISIBLE
         lifecycleScope.launch {
             notificationViewModel.deleteNotification(notification)
-            binding.emptyListText.visibility = View.INVISIBLE
+            notificationViewModel.notificationListLiveData.observe(viewLifecycleOwner) { notifications ->
+                setupDataOrEmptyListOnUi(notifications)
+                binding.progressBar.visibility = View.GONE
+            }
             notificationViewModel.loadData()
-            notificationViewModel.notificationListLiveData.observe(viewLifecycleOwner, Observer {
-                updateUI(it)
-                if (notificationViewModel.notificationListLiveData.value?.isNotEmpty() == true) {
-                    binding.emptyListText.visibility = View.INVISIBLE
-                } else {
-                    binding.emptyListText.visibility = View.VISIBLE
-                }
-            })
-            binding.progressBar.visibility = View.GONE
         }
     }
 }
