@@ -3,9 +3,7 @@ package com.example.categorynoteapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
-import com.example.categorynoteapp.ui.category.CategoryFragment
 
-//Test commit
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -14,9 +12,6 @@ class MainActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .add(R.id.container, CategoryFragment()).commit()
-        }
+        setupFirstFragmentIfNotSetup(savedInstanceState, supportFragmentManager)
     }
 }
