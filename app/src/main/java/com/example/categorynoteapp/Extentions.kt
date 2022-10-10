@@ -1,15 +1,10 @@
 package com.example.categorynoteapp
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.commit
+import android.content.Context
+import com.example.categorynoteapp.di.AppComponent
 
-fun Fragment.changeFragment(args: Bundle, fragmentManager: FragmentManager) {
-    this.arguments = args
-
-    fragmentManager.commit {
-        addToBackStack(null)
-        replace(R.id.container, this@changeFragment)
+val Context.appComponent: AppComponent
+    get() = when(this) {
+        is CategoryNotificationApplication -> appComponent
+        else -> this.applicationContext.appComponent
     }
-}
