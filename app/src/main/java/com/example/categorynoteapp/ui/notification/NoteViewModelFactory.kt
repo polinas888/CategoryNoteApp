@@ -2,11 +2,11 @@ package com.example.categorynoteapp.ui.note
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.categorynoteapp.repository.note.noteRepository
+import com.example.categorynoteapp.repository.note.NoteRepository
 import javax.inject.Inject
 
 class NoteViewModelFactory @Inject constructor(
-    val noteRepository: noteRepository
+    val noteRepository: NoteRepository
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

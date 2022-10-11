@@ -4,7 +4,7 @@ import com.example.categorynoteapp.repository.DatabaseFactory
 import com.example.categorynoteapp.repository.category.CategoryDao
 import com.example.categorynoteapp.repository.category.CategoryRepository
 import com.example.categorynoteapp.repository.note.NoteDao
-import com.example.categorynoteapp.repository.note.noteRepository
+import com.example.categorynoteapp.repository.note.NoteRepository
 import dagger.Module
 import dagger.Provides
 
@@ -16,7 +16,7 @@ object DatabaseModule {
     }
 
     @Provides
-    fun providenoteDao(): NoteDao {
+    fun provideNoteDao(): NoteDao {
         return DatabaseFactory.get().database.noteDao()
     }
 
@@ -28,8 +28,8 @@ object DatabaseModule {
     }
 
     @Provides
-    fun providenoteRepository(noteDao: NoteDao): noteRepository {
-        return noteRepository(
+    fun provideNoteRepository(noteDao: NoteDao): NoteRepository {
+        return NoteRepository(
             noteDao = noteDao
         )
     }

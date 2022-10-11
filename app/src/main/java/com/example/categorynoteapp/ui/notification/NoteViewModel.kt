@@ -7,12 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.categorynoteapp.model.Note
 import com.example.categorynoteapp.repository.DataResult
-import com.example.categorynoteapp.repository.note.noteRepository
+import com.example.categorynoteapp.repository.note.NoteRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 //Single Responsibility Principle class include only functionality how to get and safe data for category
-class NoteViewModel @Inject constructor(private val noteRepository: noteRepository) :
+class NoteViewModel @Inject constructor(private val noteRepository: NoteRepository) :
     ViewModel() {
     val noteListLiveData = MutableLiveData<List<Note>>()
     val categoryId = MutableLiveData(0)
