@@ -6,7 +6,7 @@ import com.example.categorynoteapp.di.AppComponent
 import com.example.categorynoteapp.di.DaggerAppComponent
 import com.example.categorynoteapp.repository.DatabaseFactory
 
-class CategoryNotificationApplication : Application() {
+class CategorynoteApplication : Application() {
     lateinit var appComponent: AppComponent
 
     override fun onCreate() {
@@ -18,6 +18,6 @@ class CategoryNotificationApplication : Application() {
 
 val Context.appComponent: AppComponent
     get() = when(this) {
-        is CategoryNotificationApplication -> appComponent
+        is CategorynoteApplication -> appComponent
         else -> this.applicationContext.appComponent
     }

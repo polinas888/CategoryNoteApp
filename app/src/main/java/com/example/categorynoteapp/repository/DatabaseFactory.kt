@@ -3,12 +3,12 @@ package com.example.categorynoteapp.repository
 import android.content.Context
 import androidx.room.Room
 
-private const val DATABASE_NAME = "category-notification-database"
+private const val DATABASE_NAME = "category-note-database"
 class DatabaseFactory private constructor(context: Context){
 
-    val database : CategoryNotificationDatabase = Room.databaseBuilder(
+    val database : CategoryNoteDatabase = Room.databaseBuilder(
         context.applicationContext,
-        CategoryNotificationDatabase::class.java,
+        CategoryNoteDatabase::class.java,
         DATABASE_NAME
     ).build()
 
@@ -23,7 +23,7 @@ class DatabaseFactory private constructor(context: Context){
 
         fun get() : DatabaseFactory {
             return INSTANCE ?:
-            throw IllegalStateException("CategoryNotificationRepository must be initialized")
+            throw IllegalStateException("CategoryNoteRepository must be initialized")
         }
     }
 }

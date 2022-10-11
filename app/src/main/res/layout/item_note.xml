@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="notification"
-            type="com.example.categorynoteapp.model.Notification" />
+            name="note"
+            type="com.example.categorynoteapp.model.Note" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,10 +15,10 @@
         android:layout_margin="10dp">
 
         <TextView
-            android:id="@+id/notification_id"
+            android:id="@+id/note_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{Integer.toString(notification.id)}"
+            android:text="@{Integer.toString(note.id)}"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -26,36 +26,36 @@
             tools:layout_editor_absoluteY="0dp" />
 
         <TextView
-            android:id="@+id/notification_text"
+            android:id="@+id/note_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
             android:layout_marginTop="4dp"
-            android:text="@{notification.text}"
+            android:text="@{note.text}"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/delete_notification"
+            app:layout_constraintEnd_toStartOf="@+id/delete_note"
             app:layout_constraintHorizontal_bias="0.068"
-            app:layout_constraintStart_toEndOf="@+id/notification_id"
+            app:layout_constraintStart_toEndOf="@+id/note_id"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/delete_notification"
+            android:id="@+id/delete_note"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:contentDescription="@string/delete_notification"
+            android:contentDescription="@string/delete_note"
             android:src="@drawable/delete_icon"
             android:layout_marginEnd="30dp"
-            app:layout_constraintEnd_toStartOf="@+id/edit_notification"
+            app:layout_constraintEnd_toStartOf="@+id/edit_note"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:layout_editor_absoluteY="6dp" />
 
         <ImageView
-            android:id="@+id/edit_notification"
+            android:id="@+id/edit_note"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:contentDescription="@string/edit_notification"
+            android:contentDescription="@string/edit_note"
             android:src="@drawable/editing_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

@@ -16,7 +16,7 @@ import com.example.categorynoteapp.appComponent
 import com.example.categorynoteapp.changeFragment
 import com.example.categorynoteapp.databinding.FragmentCategoryBinding
 import com.example.categorynoteapp.model.Category
-import com.example.categorynoteapp.ui.notification.NotificationFragment
+import com.example.categorynoteapp.ui.note.NoteFragment
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -97,7 +97,7 @@ class CategoryFragment : Fragment() {
     }
 
     private fun adapterOnClick(category: Category) {
-        val fragment = NotificationFragment()
+        val fragment = NoteFragment()
         val args = Bundle()
         args.putInt(ARG_CATEGORY_ID, category.id)
         fragment.changeFragment(args, parentFragmentManager)

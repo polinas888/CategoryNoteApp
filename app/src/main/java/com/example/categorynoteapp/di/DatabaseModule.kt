@@ -3,8 +3,8 @@ package com.example.categorynoteapp.di
 import com.example.categorynoteapp.repository.DatabaseFactory
 import com.example.categorynoteapp.repository.category.CategoryDao
 import com.example.categorynoteapp.repository.category.CategoryRepository
-import com.example.categorynoteapp.repository.notification.NotificationDao
-import com.example.categorynoteapp.repository.notification.NotificationRepository
+import com.example.categorynoteapp.repository.note.NoteDao
+import com.example.categorynoteapp.repository.note.noteRepository
 import dagger.Module
 import dagger.Provides
 
@@ -16,8 +16,8 @@ object DatabaseModule {
     }
 
     @Provides
-    fun provideNotificationDao(): NotificationDao {
-        return DatabaseFactory.get().database.notificationDao()
+    fun providenoteDao(): NoteDao {
+        return DatabaseFactory.get().database.noteDao()
     }
 
     @Provides
@@ -28,9 +28,9 @@ object DatabaseModule {
     }
 
     @Provides
-    fun provideNotificationRepository(notificationDao: NotificationDao): NotificationRepository {
-        return NotificationRepository(
-            notificationDao = notificationDao
+    fun providenoteRepository(noteDao: NoteDao): noteRepository {
+        return noteRepository(
+            noteDao = noteDao
         )
     }
 }

@@ -1,20 +1,20 @@
-package com.example.categorynoteapp.repository.notification
+package com.example.categorynoteapp.repository.note
 
 import androidx.room.*
-import com.example.categorynoteapp.model.Notification
+import com.example.categorynoteapp.model.Note
 
 @Dao
-interface NotificationDao {
+interface NoteDao {
 
-    @Query("SELECT * FROM notification WHERE category_id = :categoryId")
-    suspend fun getNotifications(categoryId: Int): List<Notification>
+    @Query("SELECT * FROM note WHERE category_id = :categoryId")
+    suspend fun getNotes(categoryId: Int): List<Note>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addNotification(notification: Notification)
+    suspend fun addNote(note: Note)
 
     @Delete
-    suspend fun deleteNotification(notification: Notification)
+    suspend fun deleteNote(note: Note)
 
     @Update
-    suspend fun updateNotification(notification: Notification)
+    suspend fun updateNote(note: Note)
 }

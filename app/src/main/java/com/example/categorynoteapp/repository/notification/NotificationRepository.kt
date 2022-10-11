@@ -1,27 +1,27 @@
-package com.example.categorynoteapp.repository.notification
+package com.example.categorynoteapp.repository.note
 
-import com.example.categorynoteapp.model.Notification
+import com.example.categorynoteapp.model.Note
 import javax.inject.Inject
 
-class NotificationRepository @Inject constructor(notificationDao: NotificationDao): NotificationDao {
+class noteRepository @Inject constructor(noteDao: NoteDao): NoteDao {
 
-    private val notificationDao: NotificationDao by lazy {
-        notificationDao
+    private val noteDao: NoteDao by lazy {
+        noteDao
     }
 
-    override suspend fun addNotification(notification: Notification) {
-        notificationDao.addNotification(notification)
+    override suspend fun addNote(note: Note) {
+        noteDao.addNote(note)
     }
 
-    override suspend fun getNotifications(categoryId: Int): List<Notification> {
-        return notificationDao.getNotifications(categoryId)
+    override suspend fun getNotes(categoryId: Int): List<Note> {
+        return noteDao.getNotes(categoryId)
     }
 
-    override suspend fun deleteNotification(notification: Notification) {
-        notificationDao.deleteNotification(notification)
+    override suspend fun deleteNote(note: Note) {
+        noteDao.deleteNote(note)
     }
 
-    override suspend fun updateNotification(notification: Notification) {
-        notificationDao.updateNotification(notification)
+    override suspend fun updateNote(note: Note) {
+        noteDao.updateNote(note)
     }
 }

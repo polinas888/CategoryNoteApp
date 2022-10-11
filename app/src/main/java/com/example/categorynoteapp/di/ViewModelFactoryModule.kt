@@ -1,9 +1,9 @@
 package com.example.categorynoteapp.di
 
 import com.example.categorynoteapp.repository.category.CategoryRepository
-import com.example.categorynoteapp.repository.notification.NotificationRepository
+import com.example.categorynoteapp.repository.note.noteRepository
 import com.example.categorynoteapp.ui.category.CategoryViewModelFactory
-import com.example.categorynoteapp.ui.notification.NotificationViewModelFactory
+import com.example.categorynoteapp.ui.note.NoteViewModelFactory
 import dagger.Module
 import dagger.Provides
 
@@ -17,8 +17,8 @@ class ViewModelFactoryModule {
     }
 
     @Provides
-    fun provideNotificationViewModelFactory(notificationRepository: NotificationRepository): NotificationViewModelFactory {
-        return NotificationViewModelFactory(
-            notificationRepository = notificationRepository)
+    fun providenoteViewModelFactory(noteRepository: noteRepository): NoteViewModelFactory {
+        return NoteViewModelFactory(
+            noteRepository = noteRepository)
     }
 }
