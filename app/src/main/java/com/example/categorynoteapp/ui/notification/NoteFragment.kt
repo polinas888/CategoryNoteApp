@@ -16,6 +16,8 @@ import com.example.categorynoteapp.changeFragment
 import com.example.categorynoteapp.databinding.FragmentNoteBinding
 import com.example.categorynoteapp.model.Note
 import com.example.categorynoteapp.ui.category.ARG_CATEGORY_ID
+import com.example.categorynoteapp.ui.notification.NoteViewModel
+import com.example.categorynoteapp.ui.notification.NoteViewModelFactory
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.launch
 import javax.inject.Inject

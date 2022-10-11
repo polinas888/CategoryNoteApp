@@ -1,10 +1,13 @@
 package com.example.categorynoteapp.repository.note
 
 import com.example.categorynoteapp.model.Note
+import com.example.categorynoteapp.repository.notification.NoteDataSource
 import javax.inject.Inject
 
+/* open closed principle one of implementation of interface to operate with database
+open to extend(we can add more functionality) but class doesn't change  */
 //Single Responsibility Principle class include only functionality connected to database to operate with note
-class NoteRepository @Inject constructor(noteDao: NoteDao): NoteDao {
+class NoteDataSourceImpl @Inject constructor(noteDao: NoteDao): NoteDataSource {
 
     private val noteDao: NoteDao by lazy {
         noteDao
