@@ -11,6 +11,7 @@ import com.example.categorynoteapp.repository.note.noteRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+//Single Responsibility Principle class include only functionality how to get and safe data for category
 class NoteViewModel @Inject constructor(private val noteRepository: noteRepository) :
     ViewModel() {
     val noteListLiveData = MutableLiveData<List<Note>>()

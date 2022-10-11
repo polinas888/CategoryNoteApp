@@ -14,6 +14,9 @@ import com.google.gson.GsonBuilder
 
 const val IS_NEW_NOTE = "isNewNote"
 
+/*Single Responsibility Principle class include functionality for creating or change note.
+Here not following Single Responsibility Principle.
+Could be separated just for create and just for change but it is the same layout and better to leave this way */
 class NoteCreateOrChangeFragment : Fragment() {
     private lateinit var binding: NoteCreateOrChangeFragmentBinding
     private var isNewNote = true

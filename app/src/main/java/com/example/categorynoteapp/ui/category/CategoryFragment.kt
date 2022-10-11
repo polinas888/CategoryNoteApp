@@ -23,6 +23,7 @@ import javax.inject.Inject
 const val CREATE_CATEGORY_FRAGMENT = 1
 const val ARG_CATEGORY_ID: String = "CATEGORY_ID"
 
+//Single Responsibility Principle class include only functionality category needs to operate in UI layout
 class CategoryFragment : Fragment() {
     private lateinit var binding: FragmentCategoryBinding
 

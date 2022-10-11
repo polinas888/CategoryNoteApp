@@ -3,7 +3,8 @@ package com.example.categorynoteapp.repository.note
 import com.example.categorynoteapp.model.Note
 import javax.inject.Inject
 
-class noteRepository @Inject constructor(noteDao: NoteDao): NoteDao {
+//Single Responsibility Principle class include only functionality connected to database to operate with note
+class NoteRepository @Inject constructor(noteDao: NoteDao): NoteDao {
 
     private val noteDao: NoteDao by lazy {
         noteDao

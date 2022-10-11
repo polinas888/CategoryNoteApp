@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.categorynoteapp.databinding.FragmentCreateCategoryDialogBinding
 
+//Single Responsibility Principle class include only functionality for creating new category
 class CreateCategoryDialogFragment: DialogFragment() {
     private lateinit var binding: FragmentCreateCategoryDialogBinding
 

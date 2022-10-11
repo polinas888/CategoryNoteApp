@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.categorynoteapp.databinding.ItemNoteBinding
 import com.example.categorynoteapp.model.Note
 
+//Single Responsibility Principle class include only functionality for recyclerViewAdapter for note
 class NoteAdapter(
     private val listNotes: List<Note>,
     private val onClickDelete: (Note) -> Unit,

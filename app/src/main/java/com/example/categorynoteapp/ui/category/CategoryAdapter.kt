@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.categorynoteapp.databinding.ItemCategoryBinding
 import com.example.categorynoteapp.model.Category
 
+//Single Responsibility Principle class include only functionality for recyclerViewAdapter for category
 class CategoryAdapter(
     private val listCategories: List<Category>,
     private val onItemClick: (Category) -> Unit

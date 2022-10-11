@@ -23,6 +23,7 @@ import javax.inject.Inject
 const val ARG_NOTE = "arg_note"
 const val NOTE_REQUEST_KEY = "requestKey"
 
+//Single Responsibility Principle class include only functionality note needs to operate in UI layout
 class NoteFragment : Fragment() {
     private lateinit var binding: FragmentNoteBinding
     private lateinit var noteAdapter: NoteAdapter

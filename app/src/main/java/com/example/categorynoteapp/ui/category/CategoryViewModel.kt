@@ -10,6 +10,7 @@ import com.example.categorynoteapp.repository.DataResult
 import kotlinx.coroutines.launch
 import com.example.categorynoteapp.repository.category.CategoryRepository
 
+//Single Responsibility Principle class include only functionality how to get and safe data for category
 class CategoryViewModel(private val categoryRepository: CategoryRepository) : ViewModel() {
     val categoryListLiveData = MutableLiveData<List<Category>>()
 
