@@ -4,6 +4,8 @@ import com.example.categorynoteapp.model.Category
 import com.example.categorynoteapp.repository.CategoryRepository
 import javax.inject.Inject
 
+/* Barbara Liskov Principle. CategoryRepositoryImpl override all methods of CategoryRepository interface
+ and program will work correctly with substitution of CategoryRepository to CategoryRepositoryImpl */
 /* open closed principle one of implementation of note repository interface
 open to extend(we can add more functionality) but class doesn't change  */
 //Single Responsibility Principle class include only functionality connected to database to operate with category

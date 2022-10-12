@@ -3,6 +3,8 @@ package com.example.categorynoteapp.repository.category
 import com.example.categorynoteapp.model.Category
 import javax.inject.Inject
 
+/* Barbara Liskov Principle. CategoryDataSourceImpl override all methods of CategoryDataSource interface
+ and program will work correctly with substitution of CategoryDataSource to CategoryDataSourceImpl */
 /* open closed principle one of implementation of interface to operate with database
 open to extend(we can add more functionality) but class doesn't change  */
 class CategoryDataSourceImpl @Inject constructor(categoryDao: CategoryDao): CategoryDataSource {

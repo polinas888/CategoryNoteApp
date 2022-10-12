@@ -11,6 +11,9 @@ import com.example.categorynoteapp.repository.notification.NoteRepositoryImpl
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/* Barbara Liskov Principle. We can set as a parameter NoteRepositoryImpl or some other implementation
+of NoteRepositoryInterface because NoteRepositoryImpl override all methods and program will work correctly
+with this substitution */
 //Single Responsibility Principle class include only functionality how to get and safe data for category
 class NoteViewModel @Inject constructor(private val noteRepository: NoteRepositoryImpl) :
     ViewModel() {

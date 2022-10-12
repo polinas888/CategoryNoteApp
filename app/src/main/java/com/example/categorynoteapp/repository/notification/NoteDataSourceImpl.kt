@@ -4,6 +4,8 @@ import com.example.categorynoteapp.model.Note
 import com.example.categorynoteapp.repository.notification.NoteDataSource
 import javax.inject.Inject
 
+/* Barbara Liskov Principle. NoteDataSourceImpl override all methods of CategoryDataSource interface
+ and program will work correctly with substitution of NoteDataSource to NoteDataSourceImpl */
 /* open closed principle one of implementation of interface to operate with database
 open to extend(we can add more functionality) but class doesn't change  */
 //Single Responsibility Principle class include only functionality connected to database to operate with note

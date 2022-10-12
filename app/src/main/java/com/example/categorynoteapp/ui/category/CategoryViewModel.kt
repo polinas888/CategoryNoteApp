@@ -10,6 +10,9 @@ import com.example.categorynoteapp.repository.DataResult
 import kotlinx.coroutines.launch
 import com.example.categorynoteapp.repository.category.CategoryRepositoryImpl
 
+/* Barbara Liskov Principle. We can set as a parameter CategoryRepositoryImpl or some other implementation
+of CategoryRepositoryInterface because CategoryRepositoryImpl override all methods and program will work correctly
+with this substitution */
 //Single Responsibility Principle class include only functionality how to get and safe data for category
 class CategoryViewModel(private val categoryRepositoryImpl: CategoryRepositoryImpl) : ViewModel() {
     val categoryListLiveData = MutableLiveData<List<Category>>()
