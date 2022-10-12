@@ -7,15 +7,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.categorynoteapp.model.Note
 import com.example.categorynoteapp.repository.DataResult
-import com.example.categorynoteapp.repository.notification.NoteRepositoryImpl
+import com.example.categorynoteapp.repository.NoteRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-/* Barbara Liskov Principle. We can set as a parameter NoteRepositoryImpl or some other implementation
-of NoteRepositoryInterface because NoteRepositoryImpl override all methods and program will work correctly
-with this substitution */
+/* Barbara Liskov Principle. We can set as a parameter NoteRepository and setup it's implementation
+in NoteViewModelFactory */
 //Single Responsibility Principle class include only functionality how to get and safe data for category
-class NoteViewModel @Inject constructor(private val noteRepository: NoteRepositoryImpl) :
+class NoteViewModel @Inject constructor(private val noteRepository: NoteRepository) :
     ViewModel() {
     val noteListLiveData = MutableLiveData<List<Note>>()
     val categoryId = MutableLiveData(0)

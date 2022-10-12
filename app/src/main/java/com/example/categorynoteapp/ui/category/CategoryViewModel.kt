@@ -6,21 +6,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.categorynoteapp.model.Category
+import com.example.categorynoteapp.repository.CategoryRepository
 import com.example.categorynoteapp.repository.DataResult
 import kotlinx.coroutines.launch
-import com.example.categorynoteapp.repository.category.CategoryRepositoryImpl
 
-/* Barbara Liskov Principle. We can set as a parameter CategoryRepositoryImpl or some other implementation
-of CategoryRepositoryInterface because CategoryRepositoryImpl override all methods and program will work correctly
-with this substitution */
+/* Barbara Liskov Principle. We can set as a parameter CategoryRepository and setup it's implementation
+in CategoryViewModelFactory */
 //Single Responsibility Principle class include only functionality how to get and safe data for category
-class CategoryViewModel(private val categoryRepositoryImpl: CategoryRepositoryImpl) : ViewModel() {
+class CategoryViewModel(private val categoryRepository: CategoryRepository) : ViewModel() {
     val categoryListLiveData = MutableLiveData<List<Category>>()
 
     suspend fun saveCategory(category: Category) {
         viewModelScope.launch {
             try {
-                categoryRepositoryImpl.addCategory(category)
+                categoryRepository.addCategory(category)
             } catch (exception: SQLiteConstraintException) {
                 Log.i("SaveError", "Couldn't save category")
             }
@@ -40,7 +39,7 @@ class CategoryViewModel(private val categoryRepositoryImpl: CategoryRepositoryIm
 
     private suspend fun getCategories(): DataResult<List<Category>> {
         return try {
-            val categories = categoryRepositoryImpl.getCategories()
+            val categories = categoryRepository.getCategories()
             DataResult.Ok(categories)
         } catch (e: Exception) {
             DataResult.Error(e.message.toString())
