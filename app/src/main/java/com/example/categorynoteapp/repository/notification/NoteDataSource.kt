@@ -2,6 +2,7 @@ package com.example.categorynoteapp.repository.notification
 
 import com.example.categorynoteapp.model.Note
 
+//interface segregation principle. functionality of interface is only to get CRUD operations for note data source
 /* Barbara Liskov Principle. NoteDataSource interface(base interface) made to create classes with
  specific implementation of its methods. All interface methods must be override by child classes to keep program works
   without changes, so NoteDataSource could be changed to specific class implementation */

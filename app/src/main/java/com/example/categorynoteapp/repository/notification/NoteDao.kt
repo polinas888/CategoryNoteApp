@@ -3,6 +3,8 @@ package com.example.categorynoteapp.repository.note
 import androidx.room.*
 import com.example.categorynoteapp.model.Note
 
+
+//interface segregation principle. functionality of interface is only to get CRUD operations for note for room database
 @Dao
 interface NoteDao {
 
