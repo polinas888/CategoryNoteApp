@@ -11,6 +11,8 @@ import com.example.categorynoteapp.repository.NoteRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/* Dependency inversion principle. NoteViewModel relay on NoteRepository interface not some of it's
+implementation to implement methods*/
 /* Barbara Liskov Principle. We can set as a parameter NoteRepository and setup it's implementation
 in NoteViewModelFactory */
 //Single Responsibility Principle class include only functionality how to get and safe data for category

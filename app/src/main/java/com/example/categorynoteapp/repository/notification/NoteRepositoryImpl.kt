@@ -4,6 +4,8 @@ import com.example.categorynoteapp.model.Note
 import com.example.categorynoteapp.repository.NoteRepository
 import javax.inject.Inject
 
+/* Dependency inversion principle. NoteRepositoryImpl uses NoteRepository interface to create
+ (override) methods and relay on NoteDataSource interface not some of it's implementation to implement methods */
 /* Barbara Liskov Principle. NoteRepositoryImpl override all methods of NoteRepository interface
  and program will work correctly with substitution of NoteRepository to NoteRepositoryImpl */
 /* open closed principle one of implementation of note repository interface

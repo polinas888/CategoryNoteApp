@@ -10,6 +10,8 @@ import com.example.categorynoteapp.repository.CategoryRepository
 import com.example.categorynoteapp.repository.DataResult
 import kotlinx.coroutines.launch
 
+/* Dependency inversion principle. CategoryViewModel relay on CategoryRepository interface not some
+of it's implementation to implement methods */
 /* Barbara Liskov Principle. We can set as a parameter CategoryRepository and setup it's implementation
 in CategoryViewModelFactory */
 //Single Responsibility Principle class include only functionality how to get and safe data for category

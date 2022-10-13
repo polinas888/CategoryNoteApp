@@ -4,6 +4,8 @@ import com.example.categorynoteapp.model.Note
 import com.example.categorynoteapp.repository.notification.NoteDataSource
 import javax.inject.Inject
 
+/* Dependency inversion principle. NoteDataSourceImpl uses NoteDataSource interface to create
+ (override) methods and relay on NoteDao interface not some of it's implementation to implement methods */
 /* Barbara Liskov Principle. NoteDataSourceImpl override all methods of CategoryDataSource interface
  and program will work correctly with substitution of NoteDataSource to NoteDataSourceImpl */
 /* open closed principle one of implementation of interface to operate with database

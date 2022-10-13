@@ -4,6 +4,8 @@ import com.example.categorynoteapp.model.Category
 import com.example.categorynoteapp.repository.CategoryRepository
 import javax.inject.Inject
 
+/* Dependency inversion principle. CategoryRepositoryImpl uses CategoryRepository interface to create
+ (override) methods and relay on CategoryDataSource interface not some of it's implementation to implement methods */
 /* Barbara Liskov Principle. CategoryRepositoryImpl override all methods of CategoryRepository interface
  and program will work correctly with substitution of CategoryRepository to CategoryRepositoryImpl */
 /* open closed principle one of implementation of note repository interface
