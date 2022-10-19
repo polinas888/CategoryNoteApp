@@ -22,15 +22,11 @@ class CategoryViewModel(
     categoryDao: CategoryDao
 ) : ViewModel() {
     val categoryListLiveData = MutableLiveData<List<Category>>()
-    private var categoryDataSource: CategoryDataSource =
-        categoryDataSourceFactory.createCategoryDataSource(
-            DataSourceType.CATEGORY_DATA_SOURCE_2,
-            categoryDao
-        )
     private var categoryRepository: CategoryRepository =
         categoryRepositoryFactory.createCategoryRepository(
             RepositoryType.CATEGORY_REPOSITORY_2,
-            categoryDataSource
+            categoryDataSourceFactory,
+            categoryDao
         )
 
     suspend fun saveCategory(category: Category) {

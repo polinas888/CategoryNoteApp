@@ -1,19 +1,17 @@
 package com.example.categorynoteapp.repository.category
 
 interface CategoryDataSourceFactory {
-    fun createCategoryDataSource(dataSourceType: DataSourceType, categoryDao: CategoryDao) : CategoryDataSource
+    fun createCategoryDataSource(categoryDao: CategoryDao) : CategoryDataSource
 }
 
 class CategoryDataSourceFactoryImpl: CategoryDataSourceFactory {
-    override fun createCategoryDataSource(dataSourceType: DataSourceType, categoryDao: CategoryDao): CategoryDataSource{
-        return when(dataSourceType) {
-            DataSourceType.CATEGORY_DATA_SOURCE_1 -> CategoryDataSourceImpl(categoryDao)
-            DataSourceType.CATEGORY_DATA_SOURCE_2 -> CategoryDataSourceImpl2(categoryDao)
+    override fun createCategoryDataSource(categoryDao: CategoryDao): CategoryDataSource{
+        return CategoryDataSourceImpl(categoryDao)
         }
-    }
 }
 
-enum class DataSourceType {
-    CATEGORY_DATA_SOURCE_1,
-    CATEGORY_DATA_SOURCE_2
+class CategoryDataSourceFactoryImpl2: CategoryDataSourceFactory {
+    override fun createCategoryDataSource(categoryDao: CategoryDao): CategoryDataSource{
+        return CategoryDataSourceImpl2(categoryDao)
+    }
 }
