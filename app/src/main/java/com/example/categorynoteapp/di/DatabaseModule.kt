@@ -3,10 +3,7 @@ package com.example.categorynoteapp.di
 import com.example.categorynoteapp.repository.CategoryRepository
 import com.example.categorynoteapp.repository.DatabaseFactory
 import com.example.categorynoteapp.repository.NoteRepository
-import com.example.categorynoteapp.repository.category.CategoryDao
-import com.example.categorynoteapp.repository.category.CategoryDataSource
-import com.example.categorynoteapp.repository.category.CategoryDataSourceImpl
-import com.example.categorynoteapp.repository.category.CategoryRepositoryImpl
+import com.example.categorynoteapp.repository.category.*
 import com.example.categorynoteapp.repository.note.NoteDao
 import com.example.categorynoteapp.repository.note.NoteDataSourceImpl
 import com.example.categorynoteapp.repository.notification.NoteDataSource
@@ -27,14 +24,17 @@ object DatabaseModule {
     }
 
     @Provides
-    fun provideCategoryRepository(categoryDataSource: CategoryDataSource): CategoryRepository {
+    fun provideCategoryRepository(
+        categoryDataSourceFactory: CategoryDataSourceFactory,
+        categoryDao: CategoryDao
+    ): CategoryRepository {
         return CategoryRepositoryImpl(
-            categoryDataSource = categoryDataSource
+            categoryDataSourceFactory = categoryDataSourceFactory, categoryDao
         )
     }
 
     @Provides
-    fun provideCategoryDataSource(categoryDao: CategoryDao) : CategoryDataSource {
+    fun provideCategoryDataSource(categoryDao: CategoryDao): CategoryDataSource {
         return CategoryDataSourceImpl(
             categoryDao = categoryDao
         )
@@ -48,7 +48,7 @@ object DatabaseModule {
     }
 
     @Provides
-    fun provideNoteRepository(noteDataSource: NoteDataSource) : NoteRepository {
+    fun provideNoteRepository(noteDataSource: NoteDataSource): NoteRepository {
         return NoteRepositoryImpl(noteDataSource = noteDataSource)
     }
 }

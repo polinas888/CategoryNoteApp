@@ -11,10 +11,13 @@ import javax.inject.Inject
 /* open closed principle one of implementation of note repository interface
 open to extend(we can add more functionality) but class doesn't change  */
 //Single Responsibility Principle class include only functionality connected to database to operate with category
-class CategoryRepositoryImpl @Inject constructor(private val categoryDataSource: CategoryDataSource
-): CategoryRepository {
+class CategoryRepositoryImpl @Inject constructor(
+    categoryDataSourceFactory: CategoryDataSourceFactory,
+    categoryDao: CategoryDao
+) : CategoryRepository {
+    val categoryDataSource = categoryDataSourceFactory.createCategoryDataSource(categoryDao)
 
-    override suspend fun getCategories() : List<Category> = categoryDataSource.getCategories()
+    override suspend fun getCategories(): List<Category> = categoryDataSource.getCategories()
 
     override suspend fun addCategory(category: Category) = categoryDataSource.addCategory(category)
 }

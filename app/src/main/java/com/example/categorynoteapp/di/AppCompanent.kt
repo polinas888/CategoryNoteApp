@@ -6,7 +6,7 @@ import com.example.categorynoteapp.ui.note.NoteFragment
 import dagger.BindsInstance
 import dagger.Component
 
-@Component(modules = [DatabaseModule:: class, ViewModelFactoryModule::class])
+@Component(modules = [DatabaseModule:: class, ViewModelFactoryModule::class, RepositoryFactoryModule::class])
 interface AppComponent {
 
     @Component.Factory
