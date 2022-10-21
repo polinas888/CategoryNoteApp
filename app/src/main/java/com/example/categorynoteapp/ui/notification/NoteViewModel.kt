@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.categorynoteapp.model.Note
 import com.example.categorynoteapp.repository.DataResult
 import com.example.categorynoteapp.repository.NoteRepository
+import com.example.categorynoteapp.repository.SomeDifficultOperationFacade
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,10 +17,20 @@ implementation to implement methods*/
 /* Barbara Liskov Principle. We can set as a parameter NoteRepository and setup it's implementation
 in NoteViewModelFactory */
 //Single Responsibility Principle class include only functionality how to get and safe data for category
-class NoteViewModel @Inject constructor(private val noteRepository: NoteRepository) :
+class NoteViewModel @Inject constructor(
+    private val noteRepository: NoteRepository,
+    private val someDifficultOperationFacade: SomeDifficultOperationFacade
+) :
     ViewModel() {
     val noteListLiveData = MutableLiveData<List<Note>>()
     val categoryId = MutableLiveData(0)
+
+    init {
+        // don't need to do it here, do it just to learn how facade pattern works
+        viewModelScope.launch {
+            someDifficultOperationFacade.makeSomeDifficultOperation()
+        }
+    }
 
     suspend fun saveNote(note: Note) {
         try {
@@ -33,7 +44,7 @@ class NoteViewModel @Inject constructor(private val noteRepository: NoteReposito
         viewModelScope.launch {
             when (val note = categoryId.value?.let { getNotes(it) }) {
                 is DataResult.Ok -> {
-                    noteListLiveData.value = note.response!!
+                    noteListLiveData.value = note.response
                 }
                 is DataResult.Error -> note.error
             }
