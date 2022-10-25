@@ -28,12 +28,12 @@ class NoteCreateOrChangeFragment : Fragment() {
         setOldTextForUpdatedNote()
 
         binding.cancelButton.setOnClickListener {
-            closeFragment(this)
+            this.closeFragment()
         }
 
         binding.okButton.setOnClickListener {
             passNewNoteTextArgs()
-            closeFragment(this)
+            this.closeFragment()
         }
         return binding.root
     }

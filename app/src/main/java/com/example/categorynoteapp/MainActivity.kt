@@ -20,12 +20,7 @@ class MainActivity : AppCompatActivity() {
     // Single Responsibility Principle, created method setupFirstFragmentIfNotSetup
     private fun setupFirstFragmentIfNotSetup(savedInstanceState: Bundle?, supportFragmentManager: FragmentManager) {
         if (savedInstanceState == null) {
-            setupFirstFragment(supportFragmentManager)
+            supportFragmentManager.beginTransaction().add(R.id.container, CategoryFragment()).commit()
         }
-    }
-
-    // Single Responsibility Principle, created method setupFirstFragment
-    private fun setupFirstFragment(supportFragmentManager: FragmentManager) {
-        supportFragmentManager.beginTransaction().add(R.id.container, CategoryFragment()).commit()
     }
 }
