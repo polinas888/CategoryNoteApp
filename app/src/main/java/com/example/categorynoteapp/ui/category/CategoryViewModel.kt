@@ -39,14 +39,12 @@ class CategoryViewModel(private val categoryRepository: CategoryRepository) : Vi
     }
 
     // Single Responsibility Principle, separated method to save new category if exist
-    fun handleNewCategoryData(category: Category?) {
+    fun saveNewCategory(category: Category) {
         viewModelScope.launch {
-            if (category != null) {
-                try {
-                    categoryRepository.addCategory(category)
-                } catch (exception: SQLiteConstraintException) {
-                    Log.i("SaveError", "Couldn't save category")
-                }
+            try {
+                categoryRepository.addCategory(category)
+            } catch (exception: SQLiteConstraintException) {
+                Log.i("SaveError", "Couldn't save category")
             }
         }
     }
