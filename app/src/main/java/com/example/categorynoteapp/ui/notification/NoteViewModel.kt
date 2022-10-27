@@ -31,7 +31,7 @@ class NoteViewModel @Inject constructor(private val noteRepository: NoteReposito
 
     fun loadData() {
         viewModelScope.launch {
-            when (val note = categoryId.value?.let { getNotes(it) }) {
+            when (val note = categoryId.value?.let { loadNotes(it) }) {
                 is DataResult.Ok -> {
                     noteListLiveData.value = note.response!!
                 }
@@ -56,12 +56,22 @@ class NoteViewModel @Inject constructor(private val noteRepository: NoteReposito
         }
     }
 
-    private suspend fun getNotes(categoryId: Int): DataResult<List<Note>> {
+    private suspend fun loadNotes(categoryId: Int): DataResult<List<Note>> {
         return try {
             val notes = noteRepository.getNotes(categoryId)
             DataResult.Ok(notes)
         } catch (e: Exception) {
             DataResult.Error(e.message.toString())
         }
+    }
+
+    //single responsibility principle method to update note
+    suspend fun openFragmentUpdateNote(noteText: String, noteIdForUpdate: Int, categoryId: Int) {
+        val newNote = Note(
+            id = noteIdForUpdate,
+            text = noteText,
+            category_id = categoryId
+        )
+        updateNote(newNote)
     }
 }

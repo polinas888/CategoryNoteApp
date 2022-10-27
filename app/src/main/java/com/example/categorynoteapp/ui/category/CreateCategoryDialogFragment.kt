@@ -22,13 +22,13 @@ class CreateCategoryDialogFragment: DialogFragment() {
 
         binding.okButton.setOnClickListener {
             // Single Responsibility Principle, created separate method runOnActivityResultAndPassCategoryArg
-            runOnActivityResultAndPassCategoryArg()
+            sendResultToActivity()
             dismiss()
         }
         return binding.root
     }
 
-    private fun runOnActivityResultAndPassCategoryArg() {
+    private fun sendResultToActivity() {
         val category = binding.createCategoryEditText.text.toString()
         if(category.isNotEmpty()) {
             val intent: Intent = Intent().putExtra("category", category)

@@ -43,25 +43,7 @@ class NoteFragment : Fragment() {
         requireContext().appComponent.inject(this)
 
         setFragmentResultListener(NOTE_REQUEST_KEY) { requestKey, bundle ->
-            val note = bundle.getString(ARG_NOTE)
-            val isNewNote = bundle.getBoolean(IS_NEW_NOTE)
-
-            if (note != null) {
-                if (isNewNote) {
-                    lifecycleScope.launch {
-                        //single responsibility principle wrote method for saving new note
-                        saveNewNote(note)
-                        //single responsibility principle wrote method for updating UI after change
-                        updateUiAfterChange()
-                    }
-                } else {
-                    lifecycleScope.launch {
-                        //single responsibility principle wrote method for updating new note
-                        openFragmentUpdateNote(note)
-                        updateUiAfterChange()
-                    }
-                }
-            }
+             handleNote(bundle)
         }
     }
 
@@ -70,6 +52,10 @@ class NoteFragment : Fragment() {
     ): View {
         binding = FragmentNoteBinding.inflate(layoutInflater)
         binding.noteRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.addButton.setOnClickListener {
+            //single responsibility principle to open noteCreateOrChangeFragment
+            openNoteCreateOrChangeFragment()
+        }
         return binding.root
     }
 
@@ -82,20 +68,41 @@ class NoteFragment : Fragment() {
 
         noteViewModel.noteListLiveData.observe(viewLifecycleOwner) { note ->
           //single responsibility principle created method to setup data
-            setupDataOrEmptyListOnUi(note)
+            noteAdapter = NoteAdapter((note),
+            { deleteNote(it) },
+            { openFragmentUpdateNote(it) })
+            setupNotesRecyclerView(note)
             binding.progressBar.visibility = View.GONE
         }
         noteViewModel.loadData()
+    }
 
-        binding.addButton.setOnClickListener {
-            //single responsibility principle to open noteCreateOrChangeFragment
-            openNoteCreateOrChangeFragment()
+
+    private fun handleNote(bundle: Bundle) {
+        val note = bundle.getString(ARG_NOTE)
+        val isNewNote = bundle.getBoolean(IS_NEW_NOTE)
+
+        note?.let {
+            if (isNewNote) {
+                lifecycleScope.launch {
+                    //single responsibility principle wrote method for saving new note
+                    saveNewNote(note)
+                    //single responsibility principle wrote method for updating UI after change
+                    noteViewModel.loadData()
+                }
+            } else {
+                lifecycleScope.launch {
+                    //single responsibility principle wrote method for updating new note
+                    noteViewModel.openFragmentUpdateNote(note, noteIdForUpdate, categoryId)
+                    noteViewModel.loadData()
+                }
+            }
         }
     }
 
     //single responsibility principle method to setup data or empty list
-    private fun setupDataOrEmptyListOnUi(notes: List<Note>) {
-        updateUI(notes)
+    private fun setupNotesRecyclerView(notes: List<Note>) {
+        updateUI()
         setupVisibilityOfEmptyList(notes)
     }
 
@@ -108,16 +115,6 @@ class NoteFragment : Fragment() {
         }
     }
 
-    //single responsibility principle method updated Ui after change
-    private fun updateUiAfterChange() {
-        lifecycleScope.launch {
-            noteViewModel.loadData()
-            noteViewModel.noteListLiveData.value?.let {
-                setupDataOrEmptyListOnUi(it)
-                binding.progressBar.visibility = View.GONE}
-        }
-    }
-
     //single responsibility principle method to save new note
     private suspend fun saveNewNote(noteText: String) {
         val newNote = Note(text = noteText, category_id = categoryId)
@@ -125,33 +122,18 @@ class NoteFragment : Fragment() {
             noteViewModel.saveNote(newNote)
     }
 
-    //single responsibility principle method to update note
-    private suspend fun openFragmentUpdateNote(noteText: String) {
-        val newNote = Note(
-            id = noteIdForUpdate,
-            text = noteText,
-            category_id = categoryId
-        )
-            noteViewModel.updateNote(newNote)
-    }
-
-    private fun updateUI(notes: List<Note>) {
-        noteAdapter = NoteAdapter((notes),
-            { note -> deleteNote(note) },
-            { note -> openFragmentUpdateNote(note) })
+    private fun updateUI() {
         binding.noteRecyclerView.adapter = noteAdapter
     }
 
     private fun openNoteCreateOrChangeFragment() {
-        val fragment = NoteCreateOrChangeFragment()
-        val args = Bundle()
-        fragment.changeFragment(args, parentFragmentManager)
+        WorkWithNoteFragment().changeFragment(Bundle(), parentFragmentManager)
     }
 
     private fun openFragmentUpdateNote(note: Note) {
         lifecycleScope.launch {
             noteIdForUpdate = note.id
-            val fragment = NoteCreateOrChangeFragment()
+            val fragment = WorkWithNoteFragment()
             val args = Bundle()
             val builder = GsonBuilder()
             val gson = builder.create()
@@ -165,10 +147,6 @@ class NoteFragment : Fragment() {
         binding.progressBar.visibility = View.VISIBLE
         lifecycleScope.launch {
             noteViewModel.deleteNote(note)
-            noteViewModel.noteListLiveData.observe(viewLifecycleOwner) { notes ->
-                setupDataOrEmptyListOnUi(notes)
-                binding.progressBar.visibility = View.GONE
-            }
             noteViewModel.loadData()
         }
     }

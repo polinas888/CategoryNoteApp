@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.categorynoteapp.MainActivity
 import com.example.categorynoteapp.R
@@ -17,11 +16,11 @@ import com.example.categorynoteapp.changeFragment
 import com.example.categorynoteapp.databinding.FragmentCategoryBinding
 import com.example.categorynoteapp.model.Category
 import com.example.categorynoteapp.ui.note.NoteFragment
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 const val CREATE_CATEGORY_FRAGMENT = 1
 const val ARG_CATEGORY_ID: String = "CATEGORY_ID"
+const val CATEGORY ="category"
 
 //Single Responsibility Principle class include only functionality category needs to operate in UI layout
 class CategoryFragment : Fragment() {
@@ -48,9 +47,7 @@ class CategoryFragment : Fragment() {
         (activity as MainActivity).supportActionBar?.title =
             getString(R.string.toolbar_title_category)
 
-        categoryViewModel.categoryListLiveData.observe(viewLifecycleOwner) { categories ->
-            setupDataInUI(categories)
-        }
+        setUpData()
         categoryViewModel.loadData()
 
         binding.addButton.setOnClickListener {
@@ -64,25 +61,23 @@ class CategoryFragment : Fragment() {
             CREATE_CATEGORY_FRAGMENT -> {
                 binding.progressBar.visibility = View.VISIBLE
                 if (resultCode == Activity.RESULT_OK) {
-                    saveNewCategoryIfExist(data)
-                    categoryViewModel.categoryListLiveData.observe(viewLifecycleOwner) { categories ->
-                        setupDataInUI(categories)
-                    }
+                    categoryViewModel.handleNewCategoryData(getNewCategory(data))
                     categoryViewModel.loadData()
                 }
             }
         }
     }
 
-    // Single Responsibility Principle, separated method to setupDataInUi
-    private fun setupDataInUI(categories: List<Category>) {
-        if (categories.isEmpty()) {
-            binding.emptyListText.visibility = View.VISIBLE
-        } else {
-            updateUI(categories)
-            binding.emptyListText.visibility = View.INVISIBLE
+    private fun setUpData() {
+        categoryViewModel.categoryListLiveData.observe(viewLifecycleOwner) { categories ->
+            if (categories.isEmpty()) {
+                binding.emptyListText.visibility = View.VISIBLE
+            } else {
+                updateUI(categories)
+                binding.emptyListText.visibility = View.INVISIBLE
+            }
+            binding.progressBar.visibility = View.GONE
         }
-        binding.progressBar.visibility = View.GONE
     }
 
     // Single Responsibility Principle, separated method to setupAndShowCreateCategoryDialogFragment
@@ -104,21 +99,10 @@ class CategoryFragment : Fragment() {
         fragment.changeFragment(args, parentFragmentManager)
     }
 
-    // Single Responsibility Principle, separated method to save new category if exist
-    private fun saveNewCategoryIfExist(data: Intent?) {
-        val newCategory = getNewCategory(data)
-
-        lifecycleScope.launch {
-            if (newCategory != null) {
-                categoryViewModel.saveCategory(newCategory)
-            }
-        }
-    }
-
     // Single Responsibility Principle, separated functionality to get category
     private fun getNewCategory(data: Intent?): Category? {
         val bundle = data?.extras
-        val category = bundle?.getString("category")
+        val category = bundle?.getString(CATEGORY)
         return category?.let { categoryName -> Category(name = categoryName) }
     }
 }
