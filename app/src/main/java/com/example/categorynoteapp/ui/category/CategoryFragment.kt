@@ -64,8 +64,8 @@ class CategoryFragment : Fragment() {
     }
 
     private fun handleNewCategory(bundle: Bundle) {
-        val result = bundle.getString("newCategory")
-        val category = result?.let { categoryName -> Category(name = categoryName) }
+        val categoryName = bundle.getString("newCategory")
+        val category = categoryName?.let { Category.Builder().name(it).build() }
         binding.progressBar.visibility = View.VISIBLE
         if (category != null) {
             categoryViewModel.saveNewCategory(category)
