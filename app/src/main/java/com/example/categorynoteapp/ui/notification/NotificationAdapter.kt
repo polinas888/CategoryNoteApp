@@ -8,10 +8,10 @@ import com.example.categorynoteapp.model.Note
 
 //Single Responsibility Principle class include only functionality for recyclerViewAdapter for note
 class NoteAdapter(
-    private val listNotes: List<Note>,
     private val onClickDelete: (Note) -> Unit,
     private val onClickUpdate: (Note) -> Unit
 ) : RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
+    private val listNotes: MutableList<Note> = mutableListOf()
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -29,6 +29,12 @@ class NoteAdapter(
 
     private fun getNote(position: Int): Note {
         return listNotes[position]
+    }
+
+    fun setData(listNote: List<Note>) {
+        listNotes.clear()
+        listNotes.addAll(listNote)
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(private val binding: ItemNoteBinding

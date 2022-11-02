@@ -51,7 +51,6 @@ class NoteFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentNoteBinding.inflate(layoutInflater)
-        binding.noteRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.addButton.setOnClickListener {
             //single responsibility principle to open noteCreateOrChangeFragment
             openNoteCreateOrChangeFragment()
@@ -61,16 +60,20 @@ class NoteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.apply {
+            noteAdapter = NoteAdapter (
+                { categoryList -> deleteNote(categoryList)},
+                { categoryList -> openFragmentUpdateNote(categoryList) }
+            )
+            binding.noteRecyclerView.adapter = noteAdapter
+            binding.noteRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        }
         categoryId = arguments?.getInt(ARG_CATEGORY_ID)!!
         noteViewModel.categoryId.value = categoryId
 
         (activity as MainActivity).supportActionBar?.title = getString(R.string.toolbar_title_note) + " $categoryId"
 
         noteViewModel.noteListLiveData.observe(viewLifecycleOwner) { note ->
-          //single responsibility principle created method to setup data
-            noteAdapter = NoteAdapter((note),
-            { deleteNote(it) },
-            { openFragmentUpdateNote(it) })
             setupNotesRecyclerView(note)
             binding.progressBar.visibility = View.GONE
         }
@@ -102,7 +105,7 @@ class NoteFragment : Fragment() {
 
     //single responsibility principle method to setup data or empty list
     private fun setupNotesRecyclerView(notes: List<Note>) {
-        updateUI()
+        noteAdapter.setData(notes)
         setupVisibilityOfEmptyList(notes)
     }
 
@@ -120,10 +123,6 @@ class NoteFragment : Fragment() {
         val newNote = Note(text = noteText, category_id = categoryId)
         binding.progressBar.visibility = View.VISIBLE
             noteViewModel.saveNote(newNote)
-    }
-
-    private fun updateUI() {
-        binding.noteRecyclerView.adapter = noteAdapter
     }
 
     private fun openNoteCreateOrChangeFragment() {
