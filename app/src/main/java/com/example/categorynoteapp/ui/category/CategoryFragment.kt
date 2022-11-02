@@ -19,7 +19,6 @@ import javax.inject.Inject
 
 const val CREATE_CATEGORY_FRAGMENT = "create_category_fragment"
 const val ARG_CATEGORY_ID: String = "CATEGORY_ID"
-const val CATEGORY = "category"
 
 //Single Responsibility Principle class include only functionality category needs to operate in UI layout
 class CategoryFragment : Fragment() {
@@ -37,7 +36,6 @@ class CategoryFragment : Fragment() {
     ): View? {
         binding = FragmentCategoryBinding.inflate(layoutInflater)
         requireContext().appComponent.inject(this)
-        binding.categoryRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         setFragmentResultListener(CREATE_CATEGORY_FRAGMENT) { key, bundle ->
             handleNewCategory(bundle)
@@ -48,11 +46,16 @@ class CategoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.apply {
+            categoryAdapter = CategoryAdapter{ category -> adapterOnClick(category) }
+            categoryRecyclerView.adapter = categoryAdapter
+            categoryRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        }
         (activity as MainActivity).supportActionBar?.title =
             getString(R.string.toolbar_title_category)
 
-        setUpData()
         categoryViewModel.loadData()
+        setupData()
 
         binding.addButton.setOnClickListener {
             openCreateCategoryFragment()
@@ -71,24 +74,18 @@ class CategoryFragment : Fragment() {
             categoryViewModel.saveNewCategory(category)
         }
         categoryViewModel.loadData()
-        setUpData()
     }
 
-    private fun setUpData() {
+    private fun setupData() {
         categoryViewModel.categoryListLiveData.observe(viewLifecycleOwner) { categories ->
             if (categories.isEmpty()) {
                 binding.emptyListText.visibility = View.VISIBLE
             } else {
-                updateUI(categories)
+                categoryAdapter.setData(categories)
                 binding.emptyListText.visibility = View.INVISIBLE
             }
             binding.progressBar.visibility = View.GONE
         }
-    }
-
-    private fun updateUI(categories: List<Category>) {
-        categoryAdapter = CategoryAdapter(categories) { category -> adapterOnClick(category) }
-        binding.categoryRecyclerView.adapter = categoryAdapter
     }
 
     private fun adapterOnClick(category: Category) {

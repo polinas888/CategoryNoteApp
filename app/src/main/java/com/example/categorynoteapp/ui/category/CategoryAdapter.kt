@@ -8,9 +8,9 @@ import com.example.categorynoteapp.model.Category
 
 //Single Responsibility Principle class include only functionality for recyclerViewAdapter for category
 class CategoryAdapter(
-    private val listCategories: List<Category>,
     private val onItemClick: (Category) -> Unit
 ) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
+    private val listCategories: MutableList<Category> = mutableListOf()
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -30,6 +30,12 @@ class CategoryAdapter(
 
     private fun getCategory(position: Int): Category {
         return listCategories[position]
+    }
+
+    fun setData(listCategory: List<Category>) {
+        listCategories.clear()
+        listCategories.addAll(listCategory)
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(
