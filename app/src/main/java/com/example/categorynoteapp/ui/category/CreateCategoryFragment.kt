@@ -26,7 +26,7 @@ class CreateCategoryFragment: Fragment() {
         binding.okButton.setOnClickListener {
             // Single Responsibility Principle, created separate method runOnActivityResultAndPassCategoryArg
             val category =  binding.createCategoryEditText.text.toString()
-            setFragmentResult(CREATE_CATEGORY_FRAGMENT, bundleOf("newCategory" to category))
+            setFragmentResult(CREATE_CATEGORY_EVENT, bundleOf("newCategory" to category))
             this.closeFragment()
         }
         return binding.root

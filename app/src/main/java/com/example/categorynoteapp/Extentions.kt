@@ -27,7 +27,7 @@ fun AppCompatActivity.addFragment(
 /* Single Responsibility Principle method close fragment
  + removed method to Utils from noteCreateOrChangeFragment */
 fun Fragment.closeFragment() {
-    val manager: FragmentManager = requireActivity().supportFragmentManager
+    val manager: FragmentManager = this.parentFragmentManager
     val trans: FragmentTransaction = manager.beginTransaction()
     trans.remove(this)
     trans.commit()

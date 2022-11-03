@@ -66,7 +66,7 @@ class NoteViewModel @Inject constructor(private val noteRepository: NoteReposito
     }
 
     //single responsibility principle method to update note
-    suspend fun openFragmentUpdateNote(noteText: String, noteIdForUpdate: Int, categoryId: Int) {
+    suspend fun updateNote(noteText: String, noteIdForUpdate: Int, categoryId: Int) {
         val newNote = Note(
             id = noteIdForUpdate,
             text = noteText,

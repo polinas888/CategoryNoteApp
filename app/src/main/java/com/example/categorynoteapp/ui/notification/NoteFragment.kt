@@ -96,7 +96,7 @@ class NoteFragment : Fragment() {
             } else {
                 lifecycleScope.launch {
                     //single responsibility principle wrote method for updating new note
-                    noteViewModel.openFragmentUpdateNote(note, noteIdForUpdate, categoryId)
+                    noteViewModel.updateNote(note, noteIdForUpdate, categoryId)
                     noteViewModel.loadData()
                 }
             }

@@ -17,7 +17,7 @@ import com.example.categorynoteapp.model.Category
 import com.example.categorynoteapp.ui.note.NoteFragment
 import javax.inject.Inject
 
-const val CREATE_CATEGORY_FRAGMENT = "create_category_fragment"
+const val CREATE_CATEGORY_EVENT = "create_category_event"
 const val ARG_CATEGORY_ID: String = "CATEGORY_ID"
 
 //Single Responsibility Principle class include only functionality category needs to operate in UI layout
@@ -37,7 +37,7 @@ class CategoryFragment : Fragment() {
         binding = FragmentCategoryBinding.inflate(layoutInflater)
         requireContext().appComponent.inject(this)
 
-        setFragmentResultListener(CREATE_CATEGORY_FRAGMENT) { key, bundle ->
+        setFragmentResultListener(CREATE_CATEGORY_EVENT) { key, bundle ->
             handleNewCategory(bundle)
         }
 
