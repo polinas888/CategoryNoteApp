@@ -11,7 +11,7 @@ class Category(
     var name: String?,
     var text: String?
 ) {
-    data class Builder(
+    class Builder(
         var id: Int = 0,
         var name: String? = null,
         var text: String? = null) {

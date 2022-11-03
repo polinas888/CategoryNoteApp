@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 const val CREATE_CATEGORY_FRAGMENT = "create_category_fragment"
 const val ARG_CATEGORY_ID: String = "CATEGORY_ID"
-const val CATEGORY = "category"
+const val NEW_CATEGORY = "newCategory"
 
 //Single Responsibility Principle class include only functionality category needs to operate in UI layout
 class CategoryFragment : Fragment() {
@@ -64,7 +64,7 @@ class CategoryFragment : Fragment() {
     }
 
     private fun handleNewCategory(bundle: Bundle) {
-        val categoryName = bundle.getString("newCategory")
+        val categoryName = bundle.getString(NEW_CATEGORY)
         val category = categoryName?.let { Category.Builder().name(it).build() }
         binding.progressBar.visibility = View.VISIBLE
         if (category != null) {
