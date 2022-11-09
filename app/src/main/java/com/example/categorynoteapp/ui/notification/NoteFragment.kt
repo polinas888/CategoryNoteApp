@@ -90,14 +90,11 @@ class NoteFragment : Fragment() {
                 lifecycleScope.launch {
                     //single responsibility principle wrote method for saving new note
                     saveNewNote(note)
-                    //single responsibility principle wrote method for updating UI after change
-                    noteViewModel.loadData()
                 }
             } else {
                 lifecycleScope.launch {
                     //single responsibility principle wrote method for updating new note
                     noteViewModel.updateNote(note, noteIdForUpdate, categoryId)
-                    noteViewModel.loadData()
                 }
             }
         }
@@ -146,7 +143,6 @@ class NoteFragment : Fragment() {
         binding.progressBar.visibility = View.VISIBLE
         lifecycleScope.launch {
             noteViewModel.deleteNote(note)
-            noteViewModel.loadData()
         }
     }
 }

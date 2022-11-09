@@ -73,7 +73,6 @@ class CategoryFragment : Fragment() {
         if (category != null) {
             categoryViewModel.saveNewCategory(category)
         }
-        categoryViewModel.loadData()
     }
 
     private fun setupData() {

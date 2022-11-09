@@ -43,6 +43,7 @@ class CategoryViewModel(private val categoryRepository: CategoryRepository) : Vi
         viewModelScope.launch {
             try {
                 categoryRepository.addCategory(category)
+                loadData()
             } catch (exception: SQLiteConstraintException) {
                 Log.i("SaveError", "Couldn't save category")
             }

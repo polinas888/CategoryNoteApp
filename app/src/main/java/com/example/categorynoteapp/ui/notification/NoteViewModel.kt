@@ -24,6 +24,7 @@ class NoteViewModel @Inject constructor(private val noteRepository: NoteReposito
     suspend fun saveNote(note: Note) {
         try {
             noteRepository.addNote(note)
+            loadData()
         } catch (exception: SQLiteConstraintException) {
             Log.i("noteLog", "Couldnt save note")
         }
@@ -43,16 +44,9 @@ class NoteViewModel @Inject constructor(private val noteRepository: NoteReposito
     suspend fun deleteNote(note: Note) {
         try {
             noteRepository.deleteNote(note)
+            loadData()
         } catch (e: java.lang.Exception) {
             Log.i("noteLog", "Couldn't delete note")
-        }
-    }
-
-    suspend fun updateNote(note: Note) {
-        try {
-            noteRepository.updateNote(note)
-        } catch (e: Exception) {
-            Log.i("noteLog", "Couldn't update note")
         }
     }
 
@@ -67,11 +61,12 @@ class NoteViewModel @Inject constructor(private val noteRepository: NoteReposito
 
     //single responsibility principle method to update note
     suspend fun updateNote(noteText: String, noteIdForUpdate: Int, categoryId: Int) {
-        val newNote = Note(
-            id = noteIdForUpdate,
-            text = noteText,
-            category_id = categoryId
-        )
-        updateNote(newNote)
+        val newNote = Note(id = noteIdForUpdate, text = noteText, category_id = categoryId)
+        try {
+            noteRepository.updateNote(newNote)
+            loadData()
+        } catch (e: Exception) {
+            Log.i("noteLog", "Couldn't update note")
+        }
     }
 }
