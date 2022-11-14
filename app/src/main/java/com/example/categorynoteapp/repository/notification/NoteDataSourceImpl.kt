@@ -13,11 +13,7 @@ import javax.inject.Inject
 /* open closed principle one of implementation of interface to operate with database
 open to extend(we can add more functionality) but class doesn't change  */
 //Single Responsibility Principle class include only functionality connected to database to operate with note
-class NoteDataSourceImpl /*@Inject constructor(noteDao: NoteDao)*/: NoteDataSource {
-
-//    private val noteDao: NoteDao by lazy {
-//        noteDao
-//    }
+class NoteDataSourceImpl: NoteDataSource {
 
     private val database: CategoryNoteDatabase = MainActivity.getDatabase()!!
 

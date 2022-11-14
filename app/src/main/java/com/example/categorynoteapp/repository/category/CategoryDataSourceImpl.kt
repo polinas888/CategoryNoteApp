@@ -11,10 +11,7 @@ import javax.inject.Inject
  and program will work correctly with substitution of CategoryDataSource to CategoryDataSourceImpl */
 /* open closed principle one of implementation of interface to operate with database
 open to extend(we can add more functionality) but class doesn't change  */
-class CategoryDataSourceImpl /*@Inject constructor(categoryDao: CategoryDao)*/: CategoryDataSource {
-//    private val categoryDao: CategoryDao by lazy {
-//        categoryDao
-//    }
+class CategoryDataSourceImpl: CategoryDataSource {
 
     private val database: CategoryNoteDatabase = MainActivity.getDatabase()!!
 

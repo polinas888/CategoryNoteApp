@@ -16,18 +16,42 @@ class MainActivity : AppCompatActivity() {
     }
 
     // First version of database singleton
+//    companion object {
+//        private var context: MainActivity? = null
+//        private var database: CategoryNoteDatabase? = null
+//
+//        @Synchronized fun getDatabase(): CategoryNoteDatabase? {
+//            if(database == null) {
+//                database = context?.applicationContext?.let {
+//                    Room.databaseBuilder(
+//                        it,
+//                        CategoryNoteDatabase::class.java,
+//                        DATABASE_NAME
+//                    ).build()
+//                }
+//            }
+//            return database
+//        }
+//    }
+
+    // Second version of database singleton
     companion object {
         private var context: MainActivity? = null
+
+        @Volatile
         private var database: CategoryNoteDatabase? = null
 
         fun getDatabase(): CategoryNoteDatabase? {
-            if(database == null) {
-                database = context?.applicationContext?.let {
-                    Room.databaseBuilder(
-                        it,
-                        CategoryNoteDatabase::class.java,
-                        DATABASE_NAME
-                    ).build()
+            if (database == null) {
+                @Synchronized
+                if (database == null) {
+                    database = context?.applicationContext?.let {
+                        Room.databaseBuilder(
+                            it,
+                            CategoryNoteDatabase::class.java,
+                            DATABASE_NAME
+                        ).build()
+                    }
                 }
             }
             return database
