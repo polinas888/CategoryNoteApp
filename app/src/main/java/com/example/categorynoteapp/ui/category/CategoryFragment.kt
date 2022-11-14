@@ -10,12 +10,10 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.categorynoteapp.MainActivity
 import com.example.categorynoteapp.R
-import com.example.categorynoteapp.appComponent
 import com.example.categorynoteapp.changeFragment
 import com.example.categorynoteapp.databinding.FragmentCategoryBinding
 import com.example.categorynoteapp.model.Category
 import com.example.categorynoteapp.ui.note.NoteFragment
-import javax.inject.Inject
 
 const val CREATE_CATEGORY_EVENT = "create_category_event"
 const val ARG_CATEGORY_ID: String = "CATEGORY_ID"
@@ -24,18 +22,14 @@ const val ARG_CATEGORY_ID: String = "CATEGORY_ID"
 class CategoryFragment : Fragment() {
     private lateinit var binding: FragmentCategoryBinding
 
-    @Inject
-    lateinit var categoryViewModelFactory: CategoryViewModelFactory
-    private val categoryViewModel by viewModels<CategoryViewModel> {
-        categoryViewModelFactory
-    }
+    val categoryViewModel: CategoryViewModel by viewModels()
+
     private lateinit var categoryAdapter: CategoryAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCategoryBinding.inflate(layoutInflater)
-        requireContext().appComponent.inject(this)
 
         setFragmentResultListener(CREATE_CATEGORY_EVENT) { key, bundle ->
             handleNewCategory(bundle)

@@ -11,16 +11,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.categorynoteapp.MainActivity
 import com.example.categorynoteapp.R
-import com.example.categorynoteapp.appComponent
 import com.example.categorynoteapp.changeFragment
 import com.example.categorynoteapp.databinding.FragmentNoteBinding
 import com.example.categorynoteapp.model.Note
 import com.example.categorynoteapp.ui.category.ARG_CATEGORY_ID
 import com.example.categorynoteapp.ui.notification.NoteViewModel
-import com.example.categorynoteapp.ui.notification.NoteViewModelFactory
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 const val ARG_NOTE = "arg_note"
 const val NOTE_REQUEST_KEY = "requestKey"
@@ -32,15 +29,10 @@ class NoteFragment : Fragment() {
     private var categoryId = 0
     private var noteIdForUpdate = 0
 
-    @Inject
-    lateinit var noteViewModelFactory: NoteViewModelFactory
-    private val noteViewModel by viewModels<NoteViewModel> {
-        noteViewModelFactory
-    }
+    val noteViewModel: NoteViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireContext().appComponent.inject(this)
 
         setFragmentResultListener(NOTE_REQUEST_KEY) { requestKey, bundle ->
              handleNote(bundle)

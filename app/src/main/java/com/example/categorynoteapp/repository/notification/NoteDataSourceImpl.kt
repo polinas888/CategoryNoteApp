@@ -1,6 +1,8 @@
 package com.example.categorynoteapp.repository.note
 
+import com.example.categorynoteapp.MainActivity
 import com.example.categorynoteapp.model.Note
+import com.example.categorynoteapp.repository.CategoryNoteDatabase
 import com.example.categorynoteapp.repository.notification.NoteDataSource
 import javax.inject.Inject
 
@@ -11,25 +13,27 @@ import javax.inject.Inject
 /* open closed principle one of implementation of interface to operate with database
 open to extend(we can add more functionality) but class doesn't change  */
 //Single Responsibility Principle class include only functionality connected to database to operate with note
-class NoteDataSourceImpl @Inject constructor(noteDao: NoteDao): NoteDataSource {
+class NoteDataSourceImpl /*@Inject constructor(noteDao: NoteDao)*/: NoteDataSource {
 
-    private val noteDao: NoteDao by lazy {
-        noteDao
-    }
+//    private val noteDao: NoteDao by lazy {
+//        noteDao
+//    }
+
+    private val database: CategoryNoteDatabase = MainActivity.getDatabase()!!
 
     override suspend fun addNote(note: Note) {
-        noteDao.addNote(note)
+        database.noteDao().addNote(note)
     }
 
     override suspend fun getNotes(categoryId: Int): List<Note> {
-        return noteDao.getNotes(categoryId)
+        return database.noteDao().getNotes(categoryId)
     }
 
     override suspend fun deleteNote(note: Note) {
-        noteDao.deleteNote(note)
+        database.noteDao().deleteNote(note)
     }
 
     override suspend fun updateNote(note: Note) {
-        noteDao.updateNote(note)
+        database.noteDao().updateNote(note)
     }
 }

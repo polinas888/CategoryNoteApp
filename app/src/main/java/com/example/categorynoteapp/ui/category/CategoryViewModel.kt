@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.categorynoteapp.model.Category
 import com.example.categorynoteapp.repository.CategoryRepository
 import com.example.categorynoteapp.repository.DataResult
+import com.example.categorynoteapp.repository.category.CategoryRepositoryImpl
 import kotlinx.coroutines.launch
 
 /* Dependency inversion principle. CategoryViewModel relay on CategoryRepository interface not some
@@ -15,7 +16,8 @@ of it's implementation to implement methods */
 /* Barbara Liskov Principle. We can set as a parameter CategoryRepository and setup it's implementation
 in CategoryViewModelFactory */
 //Single Responsibility Principle class include only functionality how to get and save data for category
-class CategoryViewModel(private val categoryRepository: CategoryRepository) : ViewModel() {
+class CategoryViewModel: ViewModel() {
+    private val categoryRepository: CategoryRepository = CategoryRepositoryImpl()
     val categoryListLiveData = MutableLiveData<List<Category>>()
 
     fun loadData() {

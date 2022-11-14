@@ -11,8 +11,8 @@ import javax.inject.Inject
 /* open closed principle one of implementation of note repository interface
 open to extend(we can add more functionality) but class doesn't change  */
 //Single Responsibility Principle class include only functionality connected to database to operate with category
-class CategoryRepositoryImpl @Inject constructor(private val categoryDataSource: CategoryDataSource
-): CategoryRepository {
+class CategoryRepositoryImpl: CategoryRepository {
+    private val categoryDataSource: CategoryDataSource = CategoryDataSourceImpl()
 
     override suspend fun getCategories() : List<Category> = categoryDataSource.getCategories()
 
