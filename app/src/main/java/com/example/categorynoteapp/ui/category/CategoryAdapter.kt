@@ -6,15 +6,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.categorynoteapp.databinding.ItemCategoryBinding
 import com.example.categorynoteapp.model.Category
 
+//Single Responsibility Principle class include only functionality for recyclerViewAdapter for category
 class CategoryAdapter(
-    private val listCategories: List<Category>,
     private val onItemClick: (Category) -> Unit
 ) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
+    private val listCategories: MutableList<Category> = mutableListOf()
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val binding =
             ItemCategoryBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
-        return ViewHolder(binding, onItemClick)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
@@ -31,9 +32,14 @@ class CategoryAdapter(
         return listCategories[position]
     }
 
+    fun setData(listCategory: List<Category>) {
+        listCategories.clear()
+        listCategories.addAll(listCategory)
+        notifyDataSetChanged()
+    }
+
     inner class ViewHolder(
-        private val binding: ItemCategoryBinding,
-        val onClick: (Category) -> Unit
+        private val binding: ItemCategoryBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(category: Category) {

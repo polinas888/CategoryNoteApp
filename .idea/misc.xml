@@ -5,10 +5,14 @@
       <map>
         <entry key="..\:/Users/user/AndroidStudioProjects/CategoryNoteApp/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/user/AndroidStudioProjects/CategoryNoteApp/app/src/main/res/layout/fragment_category.xml" value="0.10104166666666667" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/CategoryNoteApp/app/src/main/res/layout/fragment_create_category.xml" value="0.14270833333333333" />
         <entry key="..\:/Users/user/AndroidStudioProjects/CategoryNoteApp/app/src/main/res/layout/fragment_create_category_dialog.xml" value="0.10104166666666667" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/CategoryNoteApp/app/src/main/res/layout/fragment_note.xml" value="0.2115036231884058" />
         <entry key="..\:/Users/user/AndroidStudioProjects/CategoryNoteApp/app/src/main/res/layout/fragment_notification.xml" value="0.10104166666666667" />
         <entry key="..\:/Users/user/AndroidStudioProjects/CategoryNoteApp/app/src/main/res/layout/item_category.xml" value="0.10104166666666667" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/CategoryNoteApp/app/src/main/res/layout/item_note.xml" value="0.10104166666666667" />
         <entry key="..\:/Users/user/AndroidStudioProjects/CategoryNoteApp/app/src/main/res/layout/item_notification.xml" value="0.19429347826086957" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/CategoryNoteApp/app/src/main/res/layout/note_create_or_change_fragment.xml" value="0.10104166666666667" />
         <entry key="..\:/Users/user/AndroidStudioProjects/CategoryNoteApp/app/src/main/res/layout/notification_create_or_change_fragment.xml" value="0.10104166666666667" />
         <entry key="..\:/Users/user/AndroidStudioProjects/CategoryNoteApp/app/src/main/res/layout/toolbar.xml" value="0.10104166666666667" />
       </map>

@@ -6,10 +6,10 @@
     <string name="ok_button">OK</string>
     <string name="cancel_button">Cancel</string>
     <string name="create_new_category_title">Create new category</string>
-    <string name="toolbar_title_notification">Заметки категории</string>
-    <string name="delete_notification">delete notification</string>
-    <string name="edit_notification">edit notification</string>
-    <string name="create_or_edit_notification">Create_or_edit_notification</string>
+    <string name="toolbar_title_note">Заметки категории</string>
+    <string name="delete_note">delete note</string>
+    <string name="edit_note">edit note</string>
+    <string name="create_or_edit_note">Create_or_edit_note</string>
     <string name="list_category_is_empty">Список категорий пуст</string>
-    <string name="list_notification_is_empty">Список заметок пуст</string>
+    <string name="list_note_is_empty">Список заметок пуст</string>
 </resources>

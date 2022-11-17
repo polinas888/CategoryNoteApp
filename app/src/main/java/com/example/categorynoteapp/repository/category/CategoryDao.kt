@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import com.example.categorynoteapp.model.Category
 import androidx.room.Query
 
+//interface segregation principle. functionality of interface is only to get CRUD operations for category in room database
 @Dao
 interface CategoryDao {
 

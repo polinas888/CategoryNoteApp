@@ -2,7 +2,7 @@ package com.example.categorynoteapp.di
 
 import android.content.Context
 import com.example.categorynoteapp.ui.category.CategoryFragment
-import com.example.categorynoteapp.ui.notification.NotificationFragment
+import com.example.categorynoteapp.ui.note.NoteFragment
 import dagger.BindsInstance
 import dagger.Component
 
@@ -15,5 +15,5 @@ interface AppComponent {
     }
 
     fun inject(fragment: CategoryFragment)
-    fun inject(fragment: NotificationFragment)
+    fun inject(fragment: NoteFragment)
 }
