@@ -1,5 +1,6 @@
 package com.example.categorynoteapp.di
 
+import com.example.categorynoteapp.repository.SomeDifficultOperationFacade
 import com.example.categorynoteapp.repository.category.CategoryRepositoryImpl
 import com.example.categorynoteapp.repository.notification.NoteRepositoryImpl
 import com.example.categorynoteapp.ui.category.CategoryViewModelFactory
@@ -17,8 +18,13 @@ class ViewModelFactoryModule {
     }
 
     @Provides
-    fun provideNoteViewModelFactory(noteRepository: NoteRepositoryImpl): NoteViewModelFactory {
+    fun provideNoteViewModelFactory(
+        noteRepository: NoteRepositoryImpl,
+        someDifficultOperationFacade: SomeDifficultOperationFacade
+    ): NoteViewModelFactory {
         return NoteViewModelFactory(
-            noteRepository = noteRepository)
+            noteRepository = noteRepository,
+            someDifficultOperationFacade = someDifficultOperationFacade
+        )
     }
 }
