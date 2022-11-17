@@ -25,8 +25,8 @@ class NoteViewModel @Inject constructor(private val noteRepository: NoteReposito
         try {
             noteRepository.addNote(note)
             loadData()
-        } catch (exception: SQLiteConstraintException) {
-            Log.i("noteLog", "Couldnt save note")
+        } catch (e: android.database.sqlite.SQLiteException) {
+            Log.i("noteLog", "Couldnt save note" + e.message)
         }
     }
 
@@ -45,8 +45,8 @@ class NoteViewModel @Inject constructor(private val noteRepository: NoteReposito
         try {
             noteRepository.deleteNote(note)
             loadData()
-        } catch (e: java.lang.Exception) {
-            Log.i("noteLog", "Couldn't delete note")
+        } catch (e: android.database.sqlite.SQLiteException) {
+            Log.i("noteLog", "Couldn't delete note" + e.message)
         }
     }
 
@@ -65,8 +65,9 @@ class NoteViewModel @Inject constructor(private val noteRepository: NoteReposito
         try {
             noteRepository.updateNote(newNote)
             loadData()
-        } catch (e: Exception) {
-            Log.i("noteLog", "Couldn't update note")
+        }
+        catch (e: android.database.sqlite.SQLiteException) {
+            Log.e("noteLog", "Couldn't update note" + e.message);
         }
     }
 }

@@ -44,8 +44,8 @@ class CategoryViewModel(private val categoryRepository: CategoryRepository) : Vi
             try {
                 categoryRepository.addCategory(category)
                 loadData()
-            } catch (exception: SQLiteConstraintException) {
-                Log.i("SaveError", "Couldn't save category")
+            } catch (e: android.database.sqlite.SQLiteException) {
+                Log.i("SaveError", "Couldn't save category" + e.message)
             }
         }
     }
