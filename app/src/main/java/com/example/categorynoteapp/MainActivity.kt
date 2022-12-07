@@ -47,6 +47,4 @@ class MainActivity : AppCompatActivity() {
             addFragment(CategoryFragment(), R.id.container)
         }
     }
-
-    some bug... build shoud failed
 }
