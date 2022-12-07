@@ -47,4 +47,6 @@ class MainActivity : AppCompatActivity() {
             addFragment(CategoryFragment(), R.id.container)
         }
     }
+
+    something
 }
