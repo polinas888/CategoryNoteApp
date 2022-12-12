@@ -122,6 +122,7 @@ class NoteFragment : Fragment() {
         noteViewModel.saveNote(newNote)
     }
 
+
     private fun openNoteCreateOrChangeFragment() {
         WorkWithNoteFragment().changeFragment(Bundle(), parentFragmentManager)
     }
