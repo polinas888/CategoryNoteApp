@@ -119,7 +119,7 @@ class NoteFragment : Fragment() {
     private suspend fun saveNewNote(noteText: String) {
         val newNote = Note(text = noteText, category_id = categoryId)
         binding.progressBar.visibility = View.VISIBLE
-            noteViewModel.saveNote(newNote)
+        noteViewModel.saveNote(newNote)
     }
 
     private fun openNoteCreateOrChangeFragment() {
